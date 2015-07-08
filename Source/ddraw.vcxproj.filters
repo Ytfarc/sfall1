@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{8b8a9ddb-f386-4e12-a59c-9418ec2f0619}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{3ac8e73a-bb14-4a2e-9dd8-997980208688}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\win9x">
+      <UniqueIdentifier>{04fbc6c3-6dbe-4a85-a79a-9f6bcd6e2f5b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AmmoMod.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Bugs.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CRC.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Credits.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Criticals.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FalloutEngine.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadGameHook.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PartyControl.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeWrite.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="timer.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AmmoMod.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Bugs.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CRC.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Credits.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Criticals.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ddraw.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ddraw2.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="dinput.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="FalloutEngine.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadGameHook.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PartyControl.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeWrite.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="queue9x.cpp">
+      <Filter>Source\win9x</Filter>
+    </ClCompile>
+    <ClCompile Include="vector9x.cpp">
+      <Filter>Source\win9x</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exports.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
+  </ItemGroup>
+</Project>
