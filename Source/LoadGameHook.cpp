@@ -51,7 +51,7 @@ static const DWORD SaveGame_hook_End = 0x46EB16;
 static void __declspec(naked) SaveGame_hook() {
  __asm {
   xor  esi, esi
-  test byte ptr ds:[0x4FED78], 1            // _combat_state
+  test byte ptr ds:[_combat_state], 1
   jz   skip                                 // Не в бою
   cmp  IsControllingNPC, esi
   jne  end
@@ -69,7 +69,7 @@ static void __declspec(naked) SaveGame_hook() {
   mov  eax, PERK_bonus_move
   call perk_level_
   shl  eax, 1
-  cmp  eax, ds:[0x56BCBC]                   // _combat_free_move
+  cmp  eax, ds:[_combat_free_move]
   jne  restore
   popad
 skip:

@@ -62,6 +62,7 @@ const DWORD intface_update_hit_points_ = 0x454A08;
 const DWORD intface_update_items_ = 0x454D78;
 const DWORD intface_update_move_points_ = 0x454C34;
 const DWORD intface_use_item_ = 0x455180;
+const DWORD inven_display_msg_ = 0x4663D4;
 const DWORD inven_left_hand_ = 0x465588;
 const DWORD inven_right_hand_ = 0x465548;
 const DWORD inven_worn_ = 0x4655C8;

@@ -34,13 +34,13 @@ static void __declspec(naked) ReloadActiveHand() {
   push ebx
   push ecx
   push edx
-  mov  eax, ds:[0x50566C]                   // _itemCurrentItem
+  mov  eax, ds:[_itemCurrentItem]           // _itemCurrentItem
   imul ebx, eax, 24
   mov  eax, ds:[_obj_dude]                  // _obj_dude
   xor  ecx, ecx
 reloadItem:
   push eax
-  mov  edx, ds:[0x5956A0][ebx]              // _itemButtonItems
+  mov  edx, ds:[_itemButtonItems][ebx]      // _itemButtonItems
   call item_w_try_reload_
   test eax, eax
   pop  eax
@@ -66,7 +66,7 @@ useActiveHand:
   je   end
   mov  ebx, 2
   xor  ecx, ecx
-  mov  edx, ds:[0x5956A0][eax]              // _itemButtonItems
+  mov  edx, ds:[_itemButtonItems][eax]      // _itemButtonItems
   jmp  ReloadActiveHand_play_sfx_
 end:
   pop  edx
@@ -90,20 +90,20 @@ static void __declspec(naked) ReloadWeaponHotKey() {
   popad
   retn
 ourKey:
-  cmp  dword ptr ds:[0x505604], ebx         // _intfaceEnabled
+  cmp  dword ptr ds:[_intfaceEnabled], ebx  // _intfaceEnabled
   je   endReload
   xor  esi, esi
   dec  esi
-  cmp  dword ptr ds:[0x505700], esi         // _interfaceWindow
+  cmp  dword ptr ds:[_interfaceWindow], esi // _interfaceWindow
   je   endReload
-  mov  edx, ds:[0x50566C]                   // _itemCurrentItem
+  mov  edx, ds:[_itemCurrentItem]           // _itemCurrentItem
   imul eax, edx, 24
   cmp  byte ptr ds:[0x5956A5][eax], bl      // itsWeapon
   jne  itsWeapon                            // Да
   call intface_use_item_
   jmp  endReload
 itsWeapon:
-  test byte ptr ds:[0x4FED78], 1            // _combat_state
+  test byte ptr ds:[_combat_state], 1
   jnz  inCombat
   call ReloadActiveHand
   jmp  endReload
@@ -139,29 +139,29 @@ static void __declspec(naked) AutoReloadWeapon() {
  __asm {
   call scr_exec_map_update_scripts_
   pushad
-  cmp  dword ptr ds:[0x5050C8], 0           // _game_user_wants_to_quit
+  cmp  dword ptr ds:[_game_user_wants_to_quit], 0
   jnz  end
-  mov  eax, ds:[_obj_dude]                  // _obj_dude
+  mov  eax, ds:[_obj_dude]
   call critter_is_dead_                     // Дополнительная проверка не помешает
   test eax, eax
   jnz  end
-  cmp  dword ptr ds:[0x505604], eax         // _intfaceEnabled
+  cmp  dword ptr ds:[_intfaceEnabled], eax
   je   end
   xor  esi, esi
   dec  esi
-  cmp  dword ptr ds:[0x505700], esi         // _interfaceWindow
+  cmp  dword ptr ds:[_interfaceWindow], esi
   je   end
   inc  eax
-  mov  ebx, ds:[0x50566C]                   // _itemCurrentItem
+  mov  ebx, ds:[_itemCurrentItem]
   push ebx
   sub  eax, ebx
-  mov  ds:[0x50566C], eax                   // Устанавливаем неактивную руку
+  mov  ds:[_itemCurrentItem], eax           // Устанавливаем неактивную руку
   imul ebx, eax, 24
-  mov  eax, ds:[_obj_dude]                  // _obj_dude
+  mov  eax, ds:[_obj_dude]
   xor  ecx, ecx
 reloadOffhand:
   push eax
-  mov  edx, ds:[0x5956A0][ebx]              // _itemButtonItems
+  mov  edx, ds:[_itemButtonItems][ebx]
   call item_w_try_reload_
   test eax, eax
   pop  eax
@@ -179,7 +179,7 @@ skip_toggle_item_state:
 useOffhand:
   xchg esi, ebx                             // esi=-1 если не перезарядили или смещению неактивной руки
   pop  eax
-  mov  ds:[0x50566C], eax                   // Восстанавливаем активную руку
+  mov  ds:[_itemCurrentItem], eax           // Восстанавливаем активную руку
   call ReloadActiveHand
 end:
   popad
@@ -236,10 +236,10 @@ static void __declspec(naked) item_add_mult_hook() {
 static void __declspec(naked) fontHeight() {
  __asm {
   push ebx
-  mov  ebx, ds:[0x53A2F4]                   // curr_font_num
+  mov  ebx, ds:[_curr_font_num]
   mov  eax, 101
   call text_font_
-  call ds:[0x53A300]                        // text_height
+  call ds:[_text_height]
   xchg ebx, eax
   call text_font_
   xchg ebx, eax
@@ -252,11 +252,11 @@ static char SizeMsgBuf[32];
 static void __declspec(naked) printFreeMaxWeight() {
  __asm {
 // ebx = who, ecx = ToWidth, edi = posOffset, esi = extraWeight
-  mov  eax, ds:[0x53A2F4]                   // curr_font_num
+  mov  eax, ds:[_curr_font_num]
   push eax
   mov  eax, 101
   call text_font_
-  mov  eax, ds:[0x59CF18]                   // _i_wid
+  mov  eax, ds:[_i_wid]
   call win_get_buf_                         // eax=ToSurface
   add  edi, eax                             // ToSurface+posOffset (Ypos*ToWidth+Xpos)
   mov  eax, [ebx+0x20]
@@ -292,10 +292,10 @@ print:
   push eax
   call sprintf_
   add  esp, 0x10
-  movzx eax, byte ptr ds:[0x6A3F00]         // GreenColor
+  movzx eax, byte ptr ds:[_GreenColor]
   cmp  ebx, 0
   jge  noRed
-  mov  al, ds:[0x6AB720]                    // RedColor
+  mov  al, ds:[_RedColor]
 noRed:
   push eax
   lea  esi, SizeMsgBuf
@@ -304,7 +304,7 @@ noRed:
 nextChar:
   xor  eax, eax
   mov  al, [esi]
-  call ds:[0x53A308]                        // text_char_width
+  call ds:[_text_char_width]
   inc  eax
   add  edx, eax
   inc  esi
@@ -314,7 +314,7 @@ nextChar:
   xchg edi, eax                             // ToSurface+posOffset (Ypos*ToWidth+Xpos)
   mov  ebx, 64                              // TxtWidth
   pop  edx                                  // DisplayText
-  call ds:[0x53A2FC]                        // text_to_buf
+  call ds:[_text_to_buf]
 noWeight:
   pop  eax
   call text_font_
@@ -334,7 +334,7 @@ static void __declspec(naked) display_inventory_hook() {
   mov  eax, [esp+0x4]
   call art_ptr_unlock_
   pushad
-  mov  ebx, ds:[0x59CDEC]                   // _stack
+  mov  ebx, ds:[_stack]
   mov  ecx, 537
   mov  edi, 324*537+44+32                   // Xpos=44, Ypos=324, max text width/2=32
   xor  esi, esi
@@ -356,7 +356,7 @@ static void __declspec(naked) display_target_inventory_hook() {
   mov  eax, [esp]
   call art_ptr_unlock_
   pushad
-  mov  ebx, ds:[0x59CE14]                   // _target_stack
+  mov  ebx, ds:[_target_stack]
   mov  ecx, 537
   mov  edi, 324*537+426+32                  // Xpos=426, Ypos=324, max text width/2=32
   mov  esi, WeightOnBody                    // Учитываем вес одетой на цели брони и оружия
@@ -369,9 +369,9 @@ static void __declspec(naked) display_target_inventory_hook() {
 static void __declspec(naked) display_table_inventories_hook() {
  __asm {
   call win_get_buf_
-  mov  edi, ds:[0x59CEF8]                   // _btable
+  mov  edi, ds:[_btable]
   mov  [esp+0x6C+4], edi
-  mov  edi, ds:[0x59CEE4]                   // _ptable
+  mov  edi, ds:[_ptable]
   mov  [esp+0x74+4], edi
   retn
  }
@@ -385,10 +385,10 @@ static void __declspec(naked) display_table_inventories_hook1() {
   call buf_to_buf_
   add  esp, 0x18
   pushad
-  mov  eax, ds:[0x59CEF8]                   // _btable
+  mov  eax, ds:[_btable]
   call item_total_weight_                   // eax = вес вещей цели в окне бартера
   xchg esi, eax
-  mov  ebx, ds:[0x59CDEC]                   // _stack
+  mov  ebx, ds:[_stack]
   mov  ecx, 480
   mov  edi, 10*480+169+32                   // Xpos=169, Ypos=10, max text width/2=32
   call printFreeMaxWeight
@@ -415,11 +415,11 @@ static void __declspec(naked) display_table_inventories_hook3() {
   call buf_to_buf_
   add  esp, 0x18
   pushad
-  mov  eax, ds:[0x59CEE4]                   // _ptable
+  mov  eax, ds:[_ptable]
   call item_total_weight_                   // eax = вес вещей игрока в окне бартера
   xchg esi, eax
   add  esi, WeightOnBody                    // Учитываем вес одетой на цели брони и оружия
-  mov  ebx, ds:[0x59CE14]                   // _target_stack
+  mov  ebx, ds:[_target_stack]
   mov  ecx, 480
   mov  edi, 10*480+254+32                   // Xpos=254, Ypos=10, max text width/2=32
   call printFreeMaxWeight
@@ -433,9 +433,9 @@ static void __declspec(naked) barter_inventory_hook() {
  __asm {
   call win_draw_
   mov  ecx, -1
-//  mov  ebx, ds:[0x59CEF8]                   // _btable
-//  mov  edx, ds:[0x59CEE4]                   // _ptable
-  mov  eax, ds:[0x59CF04]                   // _barter_back_win
+//  mov  ebx, ds:[_btable]
+//  mov  edx, ds:[_ptable]
+  mov  eax, ds:[_barter_back_win]
   call display_table_inventories_
   retn
  }
@@ -456,7 +456,7 @@ static void __declspec(naked) inven_pickup_hook2() {
   pop  edi
   test eax, eax
   jz   end
-  mov  eax, ds:[0x59CEE8]                   // _curr_stack
+  mov  eax, ds:[_curr_stack]
   xchg edi, eax
   test edi, edi
   jz   useOnPlayer
@@ -469,7 +469,7 @@ useOnPlayer:
   call item_get_type_
   cmp  eax, item_type_drug
   jne  end
-  mov  eax, ds:[0x59CDEC]                   // _stack
+  mov  eax, ds:[_stack]
   push eax
   push edx
   call item_d_take_drug_
@@ -527,11 +527,10 @@ skip:
   push eax
   call sprintf_
   add  esp, 5*4
-  xor  eax, eax
-  mov  al, ds:[0x6A3F00]                    // GreenColor
+  movzx eax, byte ptr ds:[_GreenColor]
   cmp  edx, 0
   jge  noRed
-  mov  al, ds:[0x6AB720]                    // RedColor
+  mov  al, ds:[_RedColor]
 noRed:
   mov  ecx, 499
   mov  ebx, 120
@@ -543,10 +542,10 @@ static void __declspec(naked) make_loot_drop_button() {
  __asm {
   cmp  dword ptr [esp+0x4+0x4], 2
   jne  end
-  cmp  dword ptr ds:[0x507EAC], 0           // _gIsSteal
+  cmp  dword ptr ds:[_gIsSteal], 0
   jne  end
   pushad
-  mov  eax, dword ptr ds:[0x505734]         // _inven_dude
+  mov  eax, dword ptr ds:[_inven_dude]      // _inven_dude
   call critter_body_type_
   test eax, eax                             // Это Body_Type_Biped?
   jnz  noDropButton                         // Нет
@@ -589,7 +588,7 @@ static void __declspec(naked) make_loot_drop_button() {
   push ecx                                  // Height
   mov  edx, 354                             // Xpos
   mov  ebx, 154                             // Ypos
-  mov  eax, ds:[0x59CF18]                   // WinRef = _i_wid
+  mov  eax, ds:[_i_wid]                     // WinRef
   call win_register_button_
 noLootButton:
   mov  ebx, [esp+0x18+0x4+0x20]
@@ -650,7 +649,7 @@ goodTarget:
   push ecx                                  // Height
   mov  edx, 140                             // Xpos
   mov  ebx, 154                             // Ypos
-  mov  eax, ds:[0x59CF18]                   // WinRef = _i_wid
+  mov  eax, ds:[_i_wid]                     // WinRef
   call win_register_button_
 noDropButton:
   popad
@@ -678,7 +677,7 @@ static void __declspec(naked) loot_drop_all_() {
   jmp  loot_drop_all_End
 lootKey:
   pushad
-  cmp  dword ptr ds:[0x507EAC], 0           // _gIsSteal
+  cmp  dword ptr ds:[_gIsSteal], 0
   jne  end
   mov  ecx, [esp+0x10C+0x20]
   mov  eax, ecx
@@ -704,7 +703,7 @@ cantLoot:
   jmp  printError
 dropKey:
   pushad
-  cmp  dword ptr ds:[0x507EAC], 0           // _gIsSteal
+  cmp  dword ptr ds:[_gIsSteal], 0
   jne  end
   mov  ecx, [esp+0x10C+0x20]
   mov  eax, ecx
@@ -759,16 +758,16 @@ moveAll:
   call item_move_all_
   mov  ecx, 2
   push ecx
-  mov  eax, ds:[0x59CEFC]                   // _target_curr_stack
+  mov  eax, ds:[_target_curr_stack]
   mov  edx, -1
   push edx
-  mov  ebx, ds:[0x59CEF4]                   // _target_pud
-  mov  eax, ds:[0x59CDBC][eax*4]            // _target_stack_offset
+  mov  ebx, ds:[_target_pud]
+  mov  eax, ds:[_target_stack_offset][eax*4]
   call display_target_inventory_
-  mov  eax, ds:[0x59CEE8]                   // _curr_stack
+  mov  eax, ds:[_curr_stack]
   pop  edx                                  // -1
   pop  ebx                                  // 2
-  mov  eax, ds:[0x59CD94][eax*4]            // _stack_offset
+  mov  eax, ds:[_stack_offset][eax*4]
   call display_inventory_
   jmp  end
 cantDrop:

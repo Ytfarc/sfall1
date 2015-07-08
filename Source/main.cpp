@@ -165,7 +165,7 @@ retry:
   call combat_ai_
   pop  edx
 process:
-  cmp  dword ptr ds:[0x4FED74], 0           // _combat_turn_running
+  cmp  dword ptr ds:[_combat_turn_running], 0
   jle  next
   call process_bk_
   jmp  process
@@ -234,12 +234,12 @@ static void __declspec(naked) DebugMode() {
 static void __declspec(naked) obj_outline_all_items_on_() {
  __asm {
   push ebx
-  mov  eax, dword ptr ds:[0x505BEC]         // _map_elevation
+  mov  eax, dword ptr ds:[_map_elevation]
   call obj_find_first_at_
   test eax, eax
   jz   end
 loopObject:
-  cmp  eax, ds:[0x5054E4]                   // _outlined_object
+  cmp  eax, ds:[_outlined_object]
   je   nextObject
   xchg ecx, eax
   mov  eax, [ecx+0x20]
@@ -273,12 +273,12 @@ end:
 static void __declspec(naked) obj_outline_all_items_off_() {
  __asm {
   push ebx
-  mov  eax, dword ptr ds:[0x505BEC]         // _map_elevation
+  mov  eax, dword ptr ds:[_map_elevation]
   call obj_find_first_at_
   test eax, eax
   jz   end
 loopObject:
-  cmp  eax, ds:[0x5054E4]                   // _outlined_object
+  cmp  eax, ds:[_outlined_object]
   je   nextObject
   xchg ebx, eax
   mov  eax, [ebx+0x20]
@@ -320,7 +320,7 @@ static void __declspec(naked) obj_remove_outline_hook() {
   jnz  end
   cmp  eax, _objItemOutlineState
   je   end
-  mov  ds:[0x5054E4], eax                   // _outlined_object
+  mov  ds:[_outlined_object], eax
   pushad
   call obj_outline_all_items_on_
   popad
@@ -371,7 +371,7 @@ static void __declspec(naked) get_input_str_hook() {
  __asm {
   push ecx
   mov  cl, XltKey
-  test byte ptr ds:[0x539F0A], cl           // kb_lock_flags
+  test byte ptr ds:[_kb_lock_flags], cl
   jz   end
   mov  ecx, offset XltTable
   and  eax, 0xFF
@@ -387,7 +387,7 @@ static void __declspec(naked) get_input_str2_hook() {
  __asm {
   push ecx
   mov  cl, XltKey
-  test byte ptr ds:[0x539F0A], cl           // kb_lock_flags
+  test byte ptr ds:[_kb_lock_flags], cl
   jz   end
   mov  ecx, offset XltTable
   and  eax, 0xFF
@@ -424,7 +424,7 @@ static void __declspec(naked) about_process_input_hook() {
  __asm {
   call text_font_
   mov  al, XltKey
-  test byte ptr ds:[0x539F0A], al           // kb_lock_flags
+  test byte ptr ds:[_kb_lock_flags], al
   jz   end
   mov  eax, offset XltTable
   and  edx, 0xFF
@@ -576,13 +576,13 @@ static DWORD Educated, Lifegiver, Tag_, Mutate_;
 static void __declspec(naked) editor_design_hook() {
  __asm {
   call SavePlayer_
-  mov  eax, ds:[0x56E7D8]                   // Educated
+  mov  eax, ds:[_Educated]
   mov  Educated, eax
-  mov  eax, ds:[0x56E800]                   // Lifegiver
+  mov  eax, ds:[_Lifegiver]
   mov  Lifegiver, eax
-  mov  eax, ds:[0x56E85C]                   // Tag_
+  mov  eax, ds:[_Tag_]
   mov  Tag_, eax
-  mov  eax, ds:[0x56E860]                   // Mutate_
+  mov  eax, ds:[_Mutate_]
   mov  Mutate_, eax
   retn
  }
@@ -591,13 +591,13 @@ static void __declspec(naked) editor_design_hook() {
 static void __declspec(naked) editor_design_hook2() {
  __asm {
   mov  eax, Educated
-  mov  ds:[0x56E7D8], eax                   // Educated
+  mov  ds:[_Educated], eax
   mov  eax, Lifegiver
-  mov  ds:[0x56E800], eax                   // Lifegiver
+  mov  ds:[_Lifegiver], eax
   mov  eax, Tag_
-  mov  ds:[0x56E85C], eax                   // Tag_
+  mov  ds:[_Tag_], eax
   mov  eax, Mutate_
-  mov  ds:[0x56E860], eax                   // Mutate_
+  mov  ds:[_Mutate_], eax
   call RestorePlayer_
   retn
  }
@@ -608,16 +608,16 @@ static void __declspec(naked) perks_dialog_hook() {
   call ListSkills_
   mov  eax, PERK_educated
   call perk_level_
-  mov  dword ptr ds:[0x56E7D8], eax         // Educated
+  mov  dword ptr ds:[_Educated], eax
   mov  eax, PERK_lifegiver
   call perk_level_
-  mov  dword ptr ds:[0x56E800], eax         // Lifegiver
+  mov  dword ptr ds:[_Lifegiver], eax
   mov  eax, PERK_tag
   call perk_level_
-  mov  dword ptr ds:[0x56E85C], eax         // Tag_
+  mov  dword ptr ds:[_Tag_], eax
   mov  eax, PERK_mutate
   call perk_level_
-  mov  dword ptr ds:[0x56E860], eax         // Mutate_
+  mov  dword ptr ds:[_Mutate_], eax
   retn
  }
 }
@@ -641,7 +641,7 @@ end:
 static void __declspec(naked) FirstTurnAndNoEnemy() {
  __asm {
   xor  eax, eax
-  test byte ptr ds:[0x4FED78], 1            // _combat_state
+  test byte ptr ds:[_combat_state], 1
   jz   end                                  // Не в бою
   cmp  _combatNumTurns, eax
   jne  end                                  // Это не первый ход
@@ -649,10 +649,10 @@ static void __declspec(naked) FirstTurnAndNoEnemy() {
   test eax, eax                             // Враги есть?
   jz   end                                  // Да
   pushad
-  mov  ecx, ds:[0x56BCA8]                   // _list_total
+  mov  ecx, ds:[_list_total]
   mov  edx, ds:[_obj_dude]                  // _obj_dude
   mov  edx, [edx+0x50]                      // team_num группы поддержки игрока
-  mov  edi, ds:[0x56BCAC]                   // _combat_list
+  mov  edi, ds:[_combat_list]
 loopCritter:
   mov  eax, [edi]                           // eax = персонаж
   mov  ebx, [eax+0x50]                      // team_num группы поддержки персонажа
@@ -686,7 +686,7 @@ static void __declspec(naked) FirstTurnCheckDist() {
   pop  eax
   jle  end                                  // Нет
   lea  edx, cantdothat
-  mov  eax, 0x662DB8                        // _proto_main_msg_file
+  mov  eax, _proto_main_msg_file
   call message_search_
   cmp  eax, 1
   jne  skip
@@ -866,8 +866,8 @@ static const DWORD SaveGame_hook_End = 0x46DF35;
 static void __declspec(naked) SaveGame_hook() {
  __asm {
   pushad
-  mov  ecx, dword ptr ds:[0x505A50]         // _slot_cursor
-  mov  dword ptr ds:[0x612D70], eax         // _flptr
+  mov  ecx, dword ptr ds:[_slot_cursor]
+  mov  dword ptr ds:[_flptr], eax
   test eax, eax
   jz   end                                  // Это пустой слот, можно записывать
   call db_fclose_
@@ -889,24 +889,24 @@ nextSlot:
   inc  ecx
   cmp  ecx, AutoQuickSave                   // Последний слот+1?
   ja   firstSlot                            // Да
-  mov  dword ptr ds:[0x505A50], ecx         // _slot_cursor
+  mov  dword ptr ds:[_slot_cursor], ecx
   popad
   jmp  SaveGame_hook_Next
 firstSlot:
   xor  ecx, ecx
 end:
-  mov  dword ptr ds:[0x505A50], ecx         // _slot_cursor
+  mov  dword ptr ds:[_slot_cursor], ecx
   mov  eax, ecx
   shl  eax, 4
   add  eax, ecx
   shl  eax, 3
-  add  eax, 0x6122D0+0x3D                   // eax->_LSData[_slot_cursor].Comment
+  add  eax, _LSData+0x3D                   // eax->_LSData[_slot_cursor].Comment
   push eax
   call createComment
   popad
   xor  edx, edx
   inc  edx
-  mov  dword ptr ds:[0x505A54], edx         // _quick_done
+  mov  dword ptr ds:[_quick_done], edx
   dec  edx
   jmp  SaveGame_hook_End
  }
@@ -929,7 +929,7 @@ static void __declspec(naked) combat_update_critter_outline_for_los() {
   call critter_is_dead_
   test eax, eax                             // Это труп?
   jnz  end                                  // Да
-  mov  edi, ds:[0x56BCA4]                   // _combat_highlight
+  mov  edi, ds:[_combat_highlight]
   push ecx
   push eax
   mov  eax, esi
@@ -1010,8 +1010,6 @@ setOutlined:
 alreadyOutlined:
   mov  eax, esi
   xor  edx, edx
-//  cmp  dword ptr [esi+0x74], 0              // outline
-//  je   turn_on_outline
   test byte ptr [esi+0x77], 0x80            // OutlineOff_
   jz   turn_off_outline
 turn_on_outline:
@@ -1032,7 +1030,7 @@ end:
 static const DWORD obj_move_to_tile_hook_End = 0x47C7B0;
 static void __declspec(naked) obj_move_to_tile_hook() {
  __asm {
-  test byte ptr ds:[0x4FED78], 1            // _combat_state
+  test byte ptr ds:[_combat_state], 1
   jz   end                                  // Не в бою
   push eax
   mov  eax, [esp+0x44+0x4]
@@ -1050,7 +1048,7 @@ void __declspec(naked) queue_find_first_() {
  __asm {
   push ecx
 // eax = who, edx = type
-  mov  ecx, dword ptr ds:[0x662F6C]         // _queue
+  mov  ecx, dword ptr ds:[_queue]
 loopQueue:
   jecxz skip
   cmp  eax, dword ptr [ecx+0x8]             // queue.object
@@ -1133,7 +1131,7 @@ end:
 static void __declspec(naked) display_print_with_linebreak() {
  __asm {
   push edi
-  mov  edi, 0x42C0AC                        // display_print_
+  mov  edi, display_print_
   call print_with_linebreak
   pop  edi
   retn
@@ -1143,7 +1141,7 @@ static void __declspec(naked) display_print_with_linebreak() {
 static void __declspec(naked) inven_display_msg_with_linebreak() {
  __asm {
   push edi
-  mov  edi, 0x4663D4                        // inven_display_msg_
+  mov  edi, inven_display_msg_
   call print_with_linebreak
   pop  edi
   retn

@@ -60,6 +60,7 @@ extern const DWORD intface_update_hit_points_;
 extern const DWORD intface_update_items_;
 extern const DWORD intface_update_move_points_;
 extern const DWORD intface_use_item_;
+extern const DWORD inven_display_msg_;
 extern const DWORD inven_left_hand_;
 extern const DWORD inven_right_hand_;
 extern const DWORD inven_worn_;

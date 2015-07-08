@@ -36,18 +36,18 @@ static void __declspec(naked) pipboy_hook() {
  __asm {
   cmp  ebx, 0x20E                           // Кнопка НАЗАД?
   je   end
-  cmp  byte ptr ds:[0x662CC5], 0            // _holo_flag
+  cmp  byte ptr ds:[_holo_flag], 0          // _holo_flag
   jne  end
   xor  ebx, ebx                             // Нет человека - нет проблемы (c) :-p
-end:
-  mov  eax, ds:[0x662C34]                   // _crnt_func
+end:                            
+  mov  eax, ds:[_crnt_func]                 // _crnt_func
   retn
  }
 }
 
 static void __declspec(naked) PipAlarm_hook() {
  __asm {
-  mov  ds:[0x662C34], eax                   // _crnt_func
+  mov  ds:[_crnt_func], eax                 // _crnt_func
   mov  eax, 0x400
   call PipStatus_
   mov  eax, 0x4FB9D0                        // 'iisxxxx1'
@@ -152,7 +152,7 @@ static const DWORD inven_right_hand_hook_Cont = 0x46555D;
 static const DWORD inven_right_hand_hook_End = 0x465572;
 static void __declspec(naked) inven_right_hand_hook() {
  __asm {
-  cmp  eax, ds:[0x505734]                   // _inven_dude
+  cmp  eax, ds:[_inven_dude]                // _inven_dude
   je   end
   jmp  inven_right_hand_hook_Cont
 end:
@@ -165,7 +165,7 @@ static const DWORD inven_left_hand_hook_Cont = 0x46559D;
 static const DWORD inven_left_hand_hook_End = 0x4655B2;
 static void __declspec(naked) inven_left_hand_hook() {
  __asm {
-  cmp  eax, ds:[0x505734]                   // _inven_dude
+  cmp  eax, ds:[_inven_dude]                // _inven_dude
   je   end
   jmp  inven_left_hand_hook_Cont
 end:
@@ -178,7 +178,7 @@ static const DWORD inven_worn_hook_Cont = 0x4655DD;
 static const DWORD inven_worn_hook_End = 0x4655F2;
 static void __declspec(naked) inven_worn_hook() {
  __asm {
-  cmp  eax, ds:[0x505734]                   // _inven_dude
+  cmp  eax, ds:[_inven_dude]                // _inven_dude
   je   end
   jmp  inven_worn_hook_Cont
 end:
@@ -233,7 +233,7 @@ RightWeapon:
   call item_weight_
 end:
   add  WeightOnBody, eax
-  mov  eax, ds:[0x505734]                   // _inven_dude
+  mov  eax, ds:[_inven_dude]                // _inven_dude
   retn
  }
 }
@@ -294,7 +294,7 @@ foundRect:
   mov  inven_pickup_loop, -1
   mov  edx, [esp+0x3C]                      // inventory_offset
   add  edx, eax
-  mov  eax, ds:[0x59CE50]                   // _pud
+  mov  eax, ds:[_pud]                       // _pud
   push eax
   mov  eax, [eax]                           // itemsCount
   test eax, eax
@@ -370,7 +370,7 @@ static void __declspec(naked) PipStatus_hook() {
  __asm {
   call AddHotLines_
   xor  eax, eax
-  mov  dword ptr ds:[0x662C20], eax        // _hot_line_count
+  mov  dword ptr ds:[_hot_line_count], eax  // _hot_line_count
   retn
  }
 }
