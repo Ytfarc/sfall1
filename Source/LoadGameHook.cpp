@@ -60,7 +60,7 @@ static void __declspec(naked) SaveGame_hook() {
   cmp  SaveInCombatFix, 2
   je   end
   pushad
-  mov  eax, ds:[_obj_dude]                  // _obj_dude
+  mov  eax, ds:[_obj_dude]
   mov  ebx, [eax+0x40]                      // curr_mp
   mov  edx, STAT_max_move_points
   call stat_level_

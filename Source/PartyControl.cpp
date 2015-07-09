@@ -18,11 +18,11 @@
 
 #include "main.h"
 
+#include <vector>
 #include "Define.h"
 #include "FalloutEngine.h"
 #include "Logging.h"
 #include "PartyControl.h"
-#include <vector>
 
 DWORD IsControllingNPC = 0;
 DWORD HiddenArmor = 0;
@@ -56,22 +56,22 @@ static void __declspec(naked) CanUseWeapon() {
   push ebx
   mov  edi, eax
   call item_get_type_
-  cmp  eax, 3                               // Это item_type_weapon?
+  cmp  eax, item_type_weapon                // Это item_type_weapon?
   jne  canUse                               // Нет
   mov  eax, edi                             // eax=item
-  mov  edx, 2                               // hit_right_weapon_primary
+  mov  edx, hit_right_weapon_primary
   call item_w_anim_code_
   xchg ecx, eax                             // ecx=ID1=Weapon code
   xchg edi, eax                             // eax=item
   call item_w_anim_weap_
   xchg ebx, eax                             // ebx=ID2=Animation code
-  mov  esi, dword ptr ds:[_inven_dude]      // _inven_dude
+  mov  esi, dword ptr ds:[_inven_dude]
   mov  edx, dword ptr [esi+0x20]            // fid
   and  edx, 0xFFF                           // edx=Index
   mov  eax, dword ptr [esi+0x1C]            // cur_rot
   inc  eax
   push eax                                  // ID3=Direction code
-  mov  eax, 1                               // ObjType_Critter
+  mov  eax, ObjType_Critter
   call art_id_
   call art_exists_
   test eax, eax
@@ -337,7 +337,7 @@ setAddict:
 static void _declspec(naked) CombatWrapper_v2() {
  __asm {
   pushad
-  cmp  eax, dword ptr ds:[_obj_dude]        // _obj_dude
+  cmp  eax, dword ptr ds:[_obj_dude]
   jne  skip
   xor  edx, edx
   cmp  _combatNumTurns, edx

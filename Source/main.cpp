@@ -138,7 +138,7 @@ end:
 static void __declspec(naked) intface_item_reload_hook() {
  __asm {
   pushad
-  mov  eax, dword ptr ds:[_obj_dude]        // _obj_dude
+  mov  eax, dword ptr ds:[_obj_dude]
   push eax
   call register_clear_
   xor  eax, eax
@@ -650,7 +650,7 @@ static void __declspec(naked) FirstTurnAndNoEnemy() {
   jz   end                                  // Да
   pushad
   mov  ecx, ds:[_list_total]
-  mov  edx, ds:[_obj_dude]                  // _obj_dude
+  mov  edx, ds:[_obj_dude]
   mov  edx, [edx+0x50]                      // team_num группы поддержки игрока
   mov  edi, ds:[_combat_list]
 loopCritter:
@@ -764,7 +764,7 @@ end:
 
 static void __declspec(naked) FakeCombatFix3() {
  __asm {
-  cmp  dword ptr ds:[_obj_dude], eax        // _obj_dude
+  cmp  dword ptr ds:[_obj_dude], eax
   jne  end
   push eax
   call FirstTurnAndNoEnemy
@@ -917,12 +917,12 @@ static DWORD ColorLOS = 0;
 static void __declspec(naked) combat_update_critter_outline_for_los() {
  __asm {
   pushad
-  xchg esi, eax                             // esi=target
+  xchg esi, eax                             // esi = target
   mov  eax, [esi+0x64]
   shr  eax, 0x18
   cmp  eax, ObjType_Critter                 // Это персонаж?
   jne  end                                  // Нет
-  mov  ecx, ds:[_obj_dude]                  // _obj_dude
+  mov  ecx, ds:[_obj_dude]
   cmp  ecx, esi                             // Это игрок?
   je   end                                  // Да
   mov  eax, esi
@@ -933,7 +933,7 @@ static void __declspec(naked) combat_update_critter_outline_for_los() {
   push ecx
   push eax
   mov  eax, esi
-  xchg ecx, eax                             // ecx=target, eax=who (_obj_dude)
+  xchg ecx, eax                             // ecx = target, eax=who (_obj_dude)
   mov  ebx, [ecx+0x4]                       // target_tile
   mov  edx, [eax+0x4]                       // who_tile
   call combat_is_shot_blocked_
@@ -964,11 +964,11 @@ skipFriendlyFoe:
 noFriend:
   jmp  setOutlined
 itsLOS:
-  xchg edx, eax                             // eax=_obj_dude
+  xchg edx, eax                             // eax = _obj_dude
   push eax
   mov  edx, esi
   call obj_dist_
-  xchg ebx, eax                             // ebx=расстояние от игрока до цели
+  xchg ebx, eax                             // ebx = расстояние от игрока до цели
   mov  edx, STAT_pe
   pop  eax
   call stat_level_

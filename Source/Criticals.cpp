@@ -20,7 +20,6 @@
 
 #include "Criticals.h"
 #include "Logging.h"
-//#include <stdio.h>
 
 struct CritStruct {
  union {

@@ -34,13 +34,13 @@ static void __declspec(naked) ReloadActiveHand() {
   push ebx
   push ecx
   push edx
-  mov  eax, ds:[_itemCurrentItem]           // _itemCurrentItem
+  mov  eax, ds:[_itemCurrentItem]
   imul ebx, eax, 24
-  mov  eax, ds:[_obj_dude]                  // _obj_dude
+  mov  eax, ds:[_obj_dude]
   xor  ecx, ecx
 reloadItem:
   push eax
-  mov  edx, ds:[_itemButtonItems][ebx]      // _itemButtonItems
+  mov  edx, ds:[_itemButtonItems][ebx]
   call item_w_try_reload_
   test eax, eax
   pop  eax
@@ -66,7 +66,7 @@ useActiveHand:
   je   end
   mov  ebx, 2
   xor  ecx, ecx
-  mov  edx, ds:[_itemButtonItems][eax]      // _itemButtonItems
+  mov  edx, ds:[_itemButtonItems][eax]
   jmp  ReloadActiveHand_play_sfx_
 end:
   pop  edx
@@ -90,13 +90,13 @@ static void __declspec(naked) ReloadWeaponHotKey() {
   popad
   retn
 ourKey:
-  cmp  dword ptr ds:[_intfaceEnabled], ebx  // _intfaceEnabled
+  cmp  dword ptr ds:[_intfaceEnabled], ebx
   je   endReload
   xor  esi, esi
   dec  esi
-  cmp  dword ptr ds:[_interfaceWindow], esi // _interfaceWindow
+  cmp  dword ptr ds:[_interfaceWindow], esi
   je   endReload
-  mov  edx, ds:[_itemCurrentItem]           // _itemCurrentItem
+  mov  edx, ds:[_itemCurrentItem]
   imul eax, edx, 24
   cmp  byte ptr ds:[0x5956A5][eax], bl      // itsWeapon
   jne  itsWeapon                            // ƒа
@@ -110,7 +110,7 @@ itsWeapon:
 inCombat:
 //  xor  ebx, ebx                             // is_secondary
   add  edx, 6                               // edx = 6/7 - перезар€дка оружи€ в левой/правой руке
-  mov  eax, ds:[_obj_dude]                  // _obj_dude
+  mov  eax, ds:[_obj_dude]
   push eax
   call item_mp_cost_
   xchg ecx, eax
@@ -269,7 +269,7 @@ static void __declspec(naked) printFreeMaxWeight() {
   mov  eax, ebx
   call item_total_weight_                   // eax = общий вес груза
   xchg ebx, eax                             // ebx = общий вес груза, eax = кто
-  mov  edx, STAT_carry_amt                  // STAT_carry_amt
+  mov  edx, STAT_carry_amt
   call stat_level_                          // eax = макс. вес груза
   jmp  print
 itsItem:
@@ -545,7 +545,7 @@ static void __declspec(naked) make_loot_drop_button() {
   cmp  dword ptr ds:[_gIsSteal], 0
   jne  end
   pushad
-  mov  eax, dword ptr ds:[_inven_dude]      // _inven_dude
+  mov  eax, dword ptr ds:[_inven_dude]
   call critter_body_type_
   test eax, eax                             // Ёто Body_Type_Biped?
   jnz  noDropButton                         // Ќет
@@ -803,7 +803,7 @@ static void __declspec(naked) protinst_default_use_item_hook() {
   cmp  edx, ObjType_Critter
   mov  edx, [ebx+0x64]                      // edx = item pid
   jne  end
-  cmp  edx, 144                             // PID_SUPER_STIMPAK
+  cmp  edx, PID_SUPER_STIMPAK
   jne  end
   push edx
   push eax

@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include "ddraw.h"
 #include "Graphics.h"
-#include "Version.h"
 #include "input.h"
 #include "math.h"
+#include "Version.h"
 #include "vector9x.cpp"
 
 #ifdef _DEBUG

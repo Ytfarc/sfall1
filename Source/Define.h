@@ -63,6 +63,8 @@
 #define _text_height             0x53A300
 #define _text_to_buf             0x53A2FC
 
+#define PID_SUPER_STIMPAK 144
+
 // Perk Trait Types
 #define PERK_bonus_awareness     (0)
 #define PERK_bonus_hth_attacks   (1)

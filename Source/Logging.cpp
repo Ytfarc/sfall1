@@ -17,11 +17,11 @@
  */
 
 #include "main.h"
+
 #include "Logging.h"
 
 #ifdef TRACE
 
-#include "main.h"
 #include <fstream>
 
 using namespace std;

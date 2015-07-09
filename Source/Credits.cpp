@@ -18,9 +18,9 @@
 
 #include "main.h"
 
+#include <stdio.h>
 #include "FalloutEngine.h"
 #include "version.h"
-#include <stdio.h>
 
 static DWORD InCredits = 0;
 static DWORD CreditsLine = 0;
