@@ -1404,12 +1404,10 @@ static void DllMain2() {
   dlogr(" Done", DL_INIT);
  }
 
- if (GetPrivateProfileIntA("Misc", "DodgyDoorsFix", 1, ini)) {
-  dlog("Applying Dodgy Door Fix.", DL_INIT);
-  SafeWrite16(0x4112E3, 0x9090);
-  MakeCall(0x4112E5, &DodgyDoorsFix, false);
-  dlogr(" Done", DL_INIT);
- }
+ dlog("Applying Dodgy Door Fix.", DL_INIT);
+ SafeWrite16(0x4112E3, 0x9090);
+ MakeCall(0x4112E5, &DodgyDoorsFix, false);
+ dlogr(" Done", DL_INIT);
 
  dlogr("Patching out ereg call.", DL_INIT);
  BlockCall(0x43B3A8);

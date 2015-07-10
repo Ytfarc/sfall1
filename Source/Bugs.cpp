@@ -434,10 +434,8 @@ void BugsInit() {
 // ѕоказывать изменени€ мин./макс. дамага у оружи€ если вз€т перк "Ѕонус урона на расст."
  HookCall(0x465C45, &display_stats_hook);
 
- if (GetPrivateProfileIntA("Misc", "BlackSkilldexFix", 1, ini)) {
-  dlog("Applying black skilldex patch.", DL_INIT);
-  HookCall(0x487BC0, &PipStatus_hook);
-  dlogr(" Done", DL_INIT);
- }
+ dlog("Applying black skilldex patch.", DL_INIT);
+ HookCall(0x487BC0, &PipStatus_hook);
+ dlogr(" Done", DL_INIT);
 
 }
