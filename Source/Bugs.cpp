@@ -375,6 +375,30 @@ static void __declspec(naked) PipStatus_hook() {
  }
 }
 
+static const DWORD barter_attempt_transaction_hook_Cont = 0x467FE8;
+static void __declspec(naked) barter_attempt_transaction_hook() {
+ __asm {
+  cmp  dword ptr [eax+0x64], PID_ACTIVE_GEIGER_COUNTER
+  je   found
+  cmp  dword ptr [eax+0x64], PID_ACTIVE_STEALTH_BOY
+  je   found
+  xor  eax, eax
+  dec  eax
+  retn
+found:
+  call item_m_turn_off_
+  pop  eax                                  // Уничтожаем адрес возврата
+  jmp  barter_attempt_transaction_hook_Cont // А есть ли ещё включённые предметы среди продаваемых?
+ }
+}
+
+static void __declspec(naked) item_m_turn_off_hook() {
+ __asm {
+  and  byte ptr [eax+0x25], 0xDF            // Сбросим флаг использованного предмета
+  jmp  queue_remove_this_
+ }
+}
+
 void BugsInit() {
 
  dlog("Applying sharpshooter patch.", DL_INIT);
@@ -437,5 +461,12 @@ void BugsInit() {
  dlog("Applying black skilldex patch.", DL_INIT);
  HookCall(0x487BC0, &PipStatus_hook);
  dlogr(" Done", DL_INIT);
+
+// Исправление невозможности продажи ранее использованных "Счетчик Гейгера"/"Невидимка"
+// SafeWrite8(0x46ADDA, 0xBA);
+ SafeWrite8(0x46ADFA, 0xBA);
+ SafeWrite8(0x46AE2C, 0xBA);
+ MakeCall(0x467FF3, &barter_attempt_transaction_hook, false);
+ HookCall(0x46C0B9, &item_m_turn_off_hook);
 
 }
