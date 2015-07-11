@@ -159,6 +159,7 @@
     <ClInclude Include="main.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="PartyControl.h" />
+    <ClInclude Include="Quests.h" />
     <ClInclude Include="SafeWrite.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="version.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="PartyControl.cpp" />
     <ClCompile Include="queue9x.cpp" />
+    <ClCompile Include="Quests.cpp" />
     <ClCompile Include="SafeWrite.cpp" />
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="vector9x.cpp" />

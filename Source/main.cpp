@@ -20,6 +20,7 @@
 #include "Logging.h"
 #include "MainMenu.h"
 #include "PartyControl.h"
+#include "Quests.h"
 #include "timer.h"
 #include "version.h"
 
@@ -1629,7 +1630,7 @@ static void DllMain2() {
  BugsInit();
  dlogr(" Done", DL_INIT);
 
-// SafeWrite16(0x507322, 103);
+ QuestsInit();
 
  dlogr("Leave DllMain2", DL_MAIN);  
 }

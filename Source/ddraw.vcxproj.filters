@@ -60,6 +60,9 @@
     <ClInclude Include="PartyControl.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Quests.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="SafeWrite.h">
       <Filter>Headers</Filter>
     </ClInclude>
@@ -115,6 +118,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="PartyControl.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Quests.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="SafeWrite.cpp">

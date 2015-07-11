@@ -53,6 +53,7 @@
 #define _sneak_working           0x56BF3C
 #define _stack                   0x59CDEC
 #define _stack_offset            0x59CD94
+#define _sthreads                0x507318
 #define _Tag_                    0x56E85C
 #define _tag_skill               0x665010
 #define _target_curr_stack       0x59CEFC
