@@ -228,8 +228,7 @@ static void __declspec(naked) inven_action_cursor_hook() {
 static void __declspec(naked) item_add_mult_hook() {
  __asm {
   call SetDefaultAmmo
-  call item_add_force_
-  retn
+  jmp  item_add_force_
  }
 }
 
@@ -401,8 +400,7 @@ static void __declspec(naked) display_table_inventories_hook1() {
 static void __declspec(naked) display_table_inventories_hook2() {
  __asm {
   mov  dword ptr [edx+4], 4                 // WinRect.y_start = 4
-  call win_draw_rect_
-  retn
+  jmp  win_draw_rect_
  }
 }
 

@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include "FalloutEngine.h"
+#include "Logging.h"
 #include "version.h"
 
 static DWORD InCredits = 0;
@@ -125,7 +126,10 @@ fail:
 }
 
 void CreditsInit() {
- HookCall(0x472CA7, &credits_hook);
- HookCall(0x438D74, &credits_hook);
- HookCall(0x427575, &credits_get_next_line_hook);
+ if (!GetPrivateProfileIntA("Debugging", "NoCredits", 0, ini)) {
+  dlogr("Applying credits patch", DL_INIT);
+  HookCall(0x472CA7, &credits_hook);
+  HookCall(0x438D74, &credits_hook);
+  HookCall(0x427575, &credits_get_next_line_hook);
+ }
 }

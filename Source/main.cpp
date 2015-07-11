@@ -1474,7 +1474,6 @@ static void DllMain2() {
  MainMenuInit();
  dlogr(" Done", DL_INIT);
 
- dlogr("Applying credits patch", DL_INIT);
  CreditsInit();
 
  if(GetPrivateProfileIntA("Misc", "DisablePipboyAlarm", 0, ini)) {
@@ -1629,6 +1628,8 @@ static void DllMain2() {
  dlog("Running BugsInit.", DL_INIT);
  BugsInit();
  dlogr(" Done", DL_INIT);
+
+// SafeWrite16(0x507322, 103);
 
  dlogr("Leave DllMain2", DL_MAIN);  
 }
