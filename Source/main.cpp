@@ -208,27 +208,10 @@ end:
  }
 }
 
-//checks if an attacked object is a critter before attempting dodge animation
-static void __declspec(naked) DodgyDoorsFix() {
- __asm {
-  mov  eax, [ebp+0x20]                      // (original code) objStruct ptr
-  mov  ebx, [eax+0x20]                      // objStruct->FID
-  and  ebx, 0x0F000000
-  sar  ebx, 0x18
-  cmp  ebx, ObjType_Critter                 // check if object FID type flag is set to critter
-  jne  end                                  // if object not a critter leave jump condition flags
-                                            // set to skip dodge animation
-  test byte ptr [eax+0x44], 3               // (original code) DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN
-end:
-  retn
- }
-}
-
 static void __declspec(naked) DebugMode() {
  __asm {
   call config_set_value_
-  call debug_register_env_
-  retn
+  jmp  debug_register_env_
  }
 }
 
@@ -921,7 +904,7 @@ static void __declspec(naked) combat_update_critter_outline_for_los() {
   xchg esi, eax                             // esi = target
   mov  eax, [esi+0x64]
   shr  eax, 0x18
-  cmp  eax, ObjType_Critter                 // Это персонаж?
+  cmp  eax, ObjType_Critter
   jne  end                                  // Нет
   mov  ecx, ds:[_obj_dude]
   cmp  ecx, esi                             // Это игрок?
@@ -1198,7 +1181,7 @@ static void __declspec(naked) SliderBtn_hook1() {
 static void __declspec(naked) stat_level_hook() {
  __asm {
   call stat_get_bonus_
-  cmp  ebx, 6                               // Проверяем только силу-удачу
+  cmp  ebx, STAT_lu                         // Проверяем только силу-удачу
   ja   end
 //  test eax, eax                             // А есть хоть какой [+/-]бонус?
 //  jz   end                                  // Нет
@@ -1404,11 +1387,6 @@ static void DllMain2() {
   SafeWrite8(0x491944, 0x0);
   dlogr(" Done", DL_INIT);
  }
-
- dlog("Applying Dodgy Door Fix.", DL_INIT);
- SafeWrite16(0x4112E3, 0x9090);
- MakeCall(0x4112E5, &DodgyDoorsFix, false);
- dlogr(" Done", DL_INIT);
 
  dlogr("Patching out ereg call.", DL_INIT);
  BlockCall(0x43B3A8);

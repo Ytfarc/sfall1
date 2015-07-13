@@ -355,17 +355,6 @@ end:
  }
 }
 
-static void __declspec(naked) display_stats_hook() {
- __asm {
-  mov  eax, PERK_bonus_ranged_damage
-  call perk_level_
-  shl  eax, 1
-  add  dword ptr [esp+4*4], eax             // min_dmg
-  add  dword ptr [esp+4*5], eax             // max_dmg
-  jmp  sprintf_
- }
-}
-
 static void __declspec(naked) PipStatus_hook() {
  __asm {
   call AddHotLines_
@@ -396,6 +385,22 @@ static void __declspec(naked) item_m_turn_off_hook() {
  __asm {
   and  byte ptr [eax+0x25], 0xDF            // Сбросим флаг использованного предмета
   jmp  queue_remove_this_
+ }
+}
+
+//checks if an attacked object is a critter before attempting dodge animation
+static void __declspec(naked) action_melee_hook() {
+ __asm {
+  mov  eax, [ebp+0x20]                      // (original code) objStruct ptr
+  mov  ebx, [eax+0x20]                      // objStruct->FID
+  and  ebx, 0x0F000000
+  sar  ebx, 0x18
+  cmp  ebx, ObjType_Critter                 // check if object FID type flag is set to critter
+  jne  end                                  // if object not a critter leave jump condition flags
+                                            // set to skip dodge animation
+  test byte ptr [eax+0x44], 3               // (original code) DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN
+end:
+  retn
  }
 }
 
@@ -455,9 +460,6 @@ void BugsInit() {
 // патронами
  HookCall(0x46960B, &drop_ammo_into_weapon_hook);
 
-// Показывать изменения мин./макс. дамага у оружия если взят перк "Бонус урона на расст."
- HookCall(0x465C45, &display_stats_hook);
-
  dlog("Applying black skilldex patch.", DL_INIT);
  HookCall(0x487BC0, &PipStatus_hook);
  dlogr(" Done", DL_INIT);
@@ -468,5 +470,10 @@ void BugsInit() {
  SafeWrite8(0x46AE2C, 0xBA);
  MakeCall(0x467FF3, &barter_attempt_transaction_hook, false);
  HookCall(0x46C0B9, &item_m_turn_off_hook);
+
+ dlog("Applying Dodgy Door Fix.", DL_INIT);
+ SafeWrite16(0x4112E3, 0x9090);
+ MakeCall(0x4112E5, &action_melee_hook, false);
+ dlogr(" Done", DL_INIT);
 
 }

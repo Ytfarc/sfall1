@@ -28,12 +28,12 @@ void QuestsInit() {
   char iniQuests[MAX_PATH], section[4], thread[8];
   sprintf(iniQuests, ".\\%s", buf);
   short* questsTable = (short*)_sthreads;
-  for (int city = 0; city < 12; city++) {
-   _itoa_s(city * 10 + 700, section, 10);
+  for (int location = 0; location < 12; location++) {
+   _itoa_s(location * 10 + 700, section, 10);
    for (int quest = 0; quest < 9; quest++) {
-    sprintf(thread, "Quest%d", city * 10 + 701 + quest);
+    sprintf(thread, "Quest%d", location * 10 + 701 + quest);
     short gvar_index = GetPrivateProfileIntA(section, thread, -1, iniQuests);
-    if (gvar_index != -1) questsTable[city * 9 + quest] = gvar_index;
+    if (gvar_index != -1) questsTable[location * 9 + quest] = gvar_index;
    }
   }
  }

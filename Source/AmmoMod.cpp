@@ -84,6 +84,17 @@ static void __declspec(naked) display_stats_hook1() {
  }
 }
 
+static void __declspec(naked) display_stats_hook2() {
+ __asm {
+  mov  eax, PERK_bonus_ranged_damage
+  call perk_level_
+  shl  eax, 1
+  add  dword ptr [esp+4*4], eax             // min_dmg
+  add  dword ptr [esp+4*5], eax             // max_dmg
+  jmp  sprintf_
+ }
+}
+
 void AmmoModInit() {
  if (GetPrivateProfileIntA("Misc", "BonusHtHDamageFix", 1, ini)) {
   dlog("Applying Bonus HtH Damage Perk fix.", DL_INIT);
@@ -93,4 +104,8 @@ void AmmoModInit() {
   MakeCall(0x465E71, &display_stats_hook1, true);
   dlogr(" Done", DL_INIT);
  }
+
+// Показывать изменения мин./макс. дамага у оружия если взят перк "Бонус урона на расст."
+ HookCall(0x465C45, &display_stats_hook2);
+
 }

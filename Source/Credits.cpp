@@ -19,6 +19,7 @@
 #include "main.h"
 
 #include <stdio.h>
+#include "Define.h"
 #include "FalloutEngine.h"
 #include "Logging.h"
 #include "version.h"
@@ -92,15 +93,15 @@ static DWORD _stdcall CreditsNextLine(char* buf, DWORD* font, DWORD* colour) {
  if (strlen(line)) {
   if(line[0]=='#') {
    line++;
-   *font=*(DWORD*)0x56BF0C;                 // _name_font
+   *font=*(DWORD*)_name_font;
    *colour=*(BYTE*)0x6A8151;
   } else if(line[0]=='@') {
    line++;
-   *font=*(DWORD*)0x56BF08;                 // _title_font
-   *colour=*(DWORD*)0x56BF10;               // _title_color
+   *font=*(DWORD*)_title_font;
+   *colour=*(DWORD*)_title_color;
   } else {
-   *font=*(DWORD*)0x56BF0C;                 // _name_font
-   *colour=*(DWORD*)0x56BF04;               // _name_color
+   *font=*(DWORD*)_name_font;
+   *colour=*(DWORD*)_name_color;
   }
  }
  strcpy_s(buf, 256, line);

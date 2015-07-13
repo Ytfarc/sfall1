@@ -7,6 +7,7 @@
 #define _combat_list             0x56BCAC
 #define _combat_state            0x4FED78
 #define _combat_turn_running     0x4FED74
+#define _crit_succ_eff           0x4FEDA8
 #define _crnt_func               0x662C34
 #define _curr_font_num           0x53A2F4
 #define _curr_pc_stat            0x66521C
@@ -39,6 +40,8 @@
 #define _main_window             0x505B78
 #define _map_elevation           0x505BEC
 #define _Mutate_                 0x56E860
+#define _name_color              0x56BF04
+#define _name_font               0x56BF0C
 #define _obj_dude                0x65F638
 #define _outlined_object         0x5054E4
 #define _pc_name                 0x56BF1C
@@ -63,6 +66,8 @@
 #define _text_char_width         0x53A308
 #define _text_height             0x53A300
 #define _text_to_buf             0x53A2FC
+#define _title_color             0x56BF10
+#define _title_font              0x56BF08
 
 #define PID_ACTIVE_GEIGER_COUNTER 207
 #define PID_ACTIVE_STEALTH_BOY    210

@@ -56,7 +56,7 @@ static void __declspec(naked) CanUseWeapon() {
   push ebx
   mov  edi, eax
   call item_get_type_
-  cmp  eax, item_type_weapon                // Это item_type_weapon?
+  cmp  eax, item_type_weapon
   jne  canUse                               // Нет
   mov  eax, edi                             // eax=item
   mov  edx, hit_right_weapon_primary
@@ -223,7 +223,7 @@ setAddict:
   jz   setActiveHand                        // Нет
   push eax
   call item_get_type_
-  cmp  eax, item_type_weapon                // Это оружие?
+  cmp  eax, item_type_weapon
   pop  eax
   jne  setActiveHand                        // Нет
   call item_w_anim_code_

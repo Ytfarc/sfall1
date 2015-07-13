@@ -19,6 +19,7 @@
 #include "main.h"
 
 #include "Criticals.h"
+#include "Define.h"
 #include "Logging.h"
 
 struct CritStruct {
@@ -40,7 +41,7 @@ struct CritStruct {
 
 void CritInit() {
  dlog("Initilizing critical table bug fixes.", DL_INIT);
- CritStruct* defaultTable=(CritStruct*)0x4FEDA8;
+ CritStruct* defaultTable=(CritStruct*)_crit_succ_eff;
 
 // Crit_children.Leg_Right.Effect2
  SetEntry(2,4,1,4,0); // FailureEffect, (DAM_CRIP_ARM_RIGHT||DAM_BLIND||DAM_ON_FIRE||DAM_EXPLODE)->0

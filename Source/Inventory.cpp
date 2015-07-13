@@ -109,7 +109,7 @@ itsWeapon:
   jmp  endReload
 inCombat:
 //  xor  ebx, ebx                             // is_secondary
-  add  edx, 6                               // edx = 6/7 - перезарядка оружия в левой/правой руке
+  add  edx, hit_left_weapon_reload          // edx = 6/7 - перезарядка оружия в левой/правой руке
   mov  eax, ds:[_obj_dude]
   push eax
   call item_mp_cost_
@@ -263,7 +263,7 @@ static void __declspec(naked) printFreeMaxWeight() {
   sar  eax, 0x18
   test eax, eax                             // Это ObjType_Item?
   jz   itsItem                              // Да
-  cmp  eax, ObjType_Critter                 // Это ObjType_Critter?
+  cmp  eax, ObjType_Critter
   jne  noWeight                             // Нет
   mov  eax, ebx
   call item_total_weight_                   // eax = общий вес груза
@@ -274,7 +274,7 @@ static void __declspec(naked) printFreeMaxWeight() {
 itsItem:
   mov  eax, ebx
   call item_get_type_
-  cmp  eax, item_type_container             // Это item_type_container?
+  cmp  eax, item_type_container
   jne  noWeight                             // Нет
   mov  eax, ebx
   call item_c_curr_size_
@@ -430,7 +430,8 @@ static void __declspec(naked) display_table_inventories_hook3() {
 static void __declspec(naked) barter_inventory_hook() {
  __asm {
   call win_draw_
-  mov  ecx, -1
+  xor  ecx, ecx
+  dec  ecx
 //  mov  ebx, ds:[_btable]
 //  mov  edx, ds:[_ptable]
   mov  eax, ds:[_barter_back_win]
@@ -597,11 +598,11 @@ noLootButton:
   jnz  skip                                 // Нет
   xchg ebx, eax
   call item_get_type_
-  cmp  eax, item_type_container             // Это item_type_container?
+  cmp  eax, item_type_container
   je   goodTarget                           // Да
   jmp  noDropButton
 skip:
-  cmp  eax, ObjType_Critter                 // Это ObjType_Critter?
+  cmp  eax, ObjType_Critter
   jne  noDropButton                         // Нет
   xchg ebx, eax
   call critter_body_type_
@@ -713,7 +714,7 @@ dropKey:
   sar  eax, 0x18
   test eax, eax                             // Это ObjType_Item?
   jz   itsItem                              // Да
-  cmp  eax, ObjType_Critter                 // Это ObjType_Critter?
+  cmp  eax, ObjType_Critter
   jne  end                                  // Нет
   mov  eax, ebp
   call critter_body_type_
@@ -733,7 +734,7 @@ dropKey:
 itsItem:
   mov  eax, ebp
   call item_get_type_
-  cmp  eax, item_type_container             // Это item_type_container?
+  cmp  eax, item_type_container
   jne  end                                  // Нет
   mov  eax, ebp
   call item_c_max_size_
