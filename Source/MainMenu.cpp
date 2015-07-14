@@ -28,13 +28,13 @@ static DWORD OverrideColour;
 
 static const char* VerString = "SFALL1 " VERSION_STRING;
 
-static const DWORD MainMenuButtonYHookRet = 0x4735BA;
 static void __declspec(naked) MainMenuButtonYHook() {
  __asm {
   xor  edi, edi
   xor  esi, esi
   mov  ebp, MainMenuYOffset
-  jmp  MainMenuButtonYHookRet
+  mov  eax, 0x4735BA
+  jmp  eax
  }
 }
 
@@ -58,7 +58,6 @@ skip:
  }
 }
 
-static const DWORD MainMenuTextRet = 0x473520;
 static void __declspec(naked) MainMenuTextHook() {
  __asm {
   mov  edi, [esp]
@@ -80,7 +79,8 @@ static void __declspec(naked) MainMenuTextHook() {
   push edi                                  // ypos
   mov  eax, dword ptr ds:[_main_window]
   call win_print_
-  jmp  MainMenuTextRet
+  mov  eax, 0x473520
+  jmp  eax
  }
 }
 

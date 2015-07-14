@@ -183,7 +183,6 @@ end:
  }
 }
 
-static const DWORD intface_rotate_numbers_hook_End = 0x4565C6;
 static void __declspec(naked) intface_rotate_numbers_hook() {
  __asm {
 // ebx=old value, ecx=new value
@@ -204,7 +203,8 @@ greater:
 skip:
   dec  ebx
 end:
-  jmp  intface_rotate_numbers_hook_End
+  mov  esi, 0x4565C6
+  jmp  esi
  }
 }
 
@@ -350,7 +350,6 @@ end:
 
 static byte XltTable[94];
 static byte XltKey = 4;                     // 4 = Scroll Lock, 2 = Caps Lock, 1 = Num Lock
-static const DWORD get_input_str_hook_End = 0x42E0BB;
 static void __declspec(naked) get_input_str_hook() {
  __asm {
   push ecx
@@ -362,11 +361,11 @@ static void __declspec(naked) get_input_str_hook() {
   mov  al, [ecx+eax-0x20]
 end:
   mov  byte ptr [esp+esi+4], al
-  jmp  get_input_str_hook_End
+  mov  eax, 0x42E0BB
+  jmp  eax
  }
 }
 
-static const DWORD get_input_str2_hook_End = 0x471789;
 static void __declspec(naked) get_input_str2_hook() {
  __asm {
   push ecx
@@ -378,11 +377,11 @@ static void __declspec(naked) get_input_str2_hook() {
   mov  al, [ecx+eax-0x20]
 end:
   mov  byte ptr [esp+edi+4], al
-  jmp  get_input_str2_hook_End
+  mov  eax, 0x471789
+  jmp  eax
  }
 }
 
-static const DWORD kb_next_ascii_English_US_hook_End = 0x4B7065;
 static void __declspec(naked) kb_next_ascii_English_US_hook() {
  __asm {
   mov  dh, [eax]
@@ -400,7 +399,8 @@ static void __declspec(naked) kb_next_ascii_English_US_hook() {
   je   end
   cmp  dh, 0x30                             // DIK_B
 end:
-  jmp  kb_next_ascii_English_US_hook_End
+  mov  eax, 0x4B7065
+  jmp  eax
  }
 }
 
@@ -528,9 +528,6 @@ notFour:
 }
 
 static const char* _nar_31 = "nar_31";
-static const DWORD nar_28 = 0x438BC5;
-static const DWORD nar_29 = 0x438B98;
-static const DWORD Brotherhood_final_End = 0x438BDF;
 static void __declspec(naked) Brotherhood_final() {
  __asm {
   mov  eax, 16                              // BROTHERHOOD_INVADED
@@ -539,11 +536,12 @@ static void __declspec(naked) Brotherhood_final() {
   jnz  nar_31
   mov  eax, 605                             // RHOMBUS_STATUS
   call game_get_global_var_
+  mov  edx, 0x438BC5
   test eax, eax
-  jnz  RhombusDead
-  jmp  nar_28
+  jz   RhombusDead
+  mov  edx, 0x438B98
 RhombusDead:
-  jmp  nar_29
+  jmp  edx
 nar_31:
   push 0
   mov  edx, 317                             // SEQ5D.FRM
@@ -552,7 +550,8 @@ nar_31:
   xor  ebx, ebx
   call art_id_
   mov  edx, _nar_31
-  jmp  Brotherhood_final_End
+  mov  ebx, 0x438BDF
+  jmp  ebx
  }
 }
 
@@ -606,8 +605,6 @@ static void __declspec(naked) perks_dialog_hook() {
  }
 }
 
-static const DWORD perk_can_add_hook_End = 0x486BC1;
-static const DWORD perk_can_add_hook_End1 = 0x486BC8;
 static void __declspec(naked) perk_can_add_hook() {
  __asm {
   imul edx, eax, 3
@@ -616,9 +613,11 @@ static void __declspec(naked) perk_can_add_hook() {
   call stat_pc_get_
   cmp  eax, edx
   jge  end
-  jmp  perk_can_add_hook_End
+  mov  eax, 0x486BC1
+  jmp  eax
 end:
-  jmp  perk_can_add_hook_End1
+  mov  edi, 0x486BC8
+  jmp  edi
  }
 }
 
@@ -685,7 +684,6 @@ end:
  }
 }
 
-static const DWORD check_move_hook_End = 0x417A0F;
 static void __declspec(naked) check_move_hook() {
  __asm {
   call FirstTurnAndNoEnemy
@@ -699,11 +697,11 @@ skip:
   dec  esi
 end:
   pop  eax                                  // Уничтожаем адрес возврата
-  jmp  check_move_hook_End
+  mov  eax, 0x417A0F
+  jmp  eax
  }
 }
 
-static const DWORD gmouse_bk_process_hook1_End = 0x443915;
 static void __declspec(naked) gmouse_bk_process_hook1() {
  __asm {
   xchg ebp, eax
@@ -716,7 +714,8 @@ static void __declspec(naked) gmouse_bk_process_hook1() {
   retn
 end:
   pop  eax                                  // Уничтожаем адрес возврата
-  jmp  gmouse_bk_process_hook1_End
+  mov  eax, 0x443915
+  jmp  eax
  }
 }
 
@@ -845,8 +844,6 @@ static void _stdcall createComment(char* bufstr) {
 }
 
 static DWORD AutoQuickSave = 0;
-static const DWORD SaveGame_hook_Next = 0x46DEB8;
-static const DWORD SaveGame_hook_End = 0x46DF35;
 static void __declspec(naked) SaveGame_hook() {
  __asm {
   pushad
@@ -875,7 +872,8 @@ nextSlot:
   ja   firstSlot                            // Да
   mov  dword ptr ds:[_slot_cursor], ecx
   popad
-  jmp  SaveGame_hook_Next
+  mov  eax, 0x46DEB8
+  jmp  eax
 firstSlot:
   xor  ecx, ecx
 end:
@@ -891,8 +889,8 @@ end:
   xor  edx, edx
   inc  edx
   mov  dword ptr ds:[_quick_done], edx
-  dec  edx
-  jmp  SaveGame_hook_End
+  mov  edx, 0x46DF33
+  jmp  edx
  }
 }
 
@@ -1011,19 +1009,17 @@ end:
  }
 }
 
-static const DWORD obj_move_to_tile_hook_End = 0x47C7B0;
 static void __declspec(naked) obj_move_to_tile_hook() {
  __asm {
   test byte ptr ds:[_combat_state], 1
   jz   end                                  // Не в бою
-  push eax
-  mov  eax, [esp+0x44+0x4]
+  mov  eax, [esp+0x44]
   call combat_update_critter_outline_for_los
-  pop  eax
 end:
   mov  ebx, [esp+0x4C]
   test ebx, ebx
-  jmp  obj_move_to_tile_hook_End
+  mov  eax, 0x47C7B0
+  jmp  eax
  }
 }
 
@@ -1196,6 +1192,30 @@ noBonus:
   xor  eax, eax                             // Не учитываем эффект от наркотиков/радиации/etc
 end:
   retn
+ }
+}
+
+static void __declspec(naked) barter_attempt_transaction_hook() {
+ __asm {
+  cmp  dword ptr [eax+0x64], PID_ACTIVE_GEIGER_COUNTER
+  je   found
+  cmp  dword ptr [eax+0x64], PID_ACTIVE_STEALTH_BOY
+  je   found
+  xor  eax, eax
+  dec  eax
+  retn
+found:
+  call item_m_turn_off_
+  pop  eax                                  // Уничтожаем адрес возврата
+  mov  eax, 0x467FE8
+  jmp  eax                                  // А есть ли ещё включённые предметы среди продаваемых?
+ }
+}
+
+static void __declspec(naked) item_m_turn_off_hook() {
+ __asm {
+  and  byte ptr [eax+0x25], 0xDF            // Сбросим флаг использованного предмета
+  jmp  queue_remove_this_
  }
 }
 
@@ -1608,7 +1628,17 @@ static void DllMain2() {
  BugsInit();
  dlogr(" Done", DL_INIT);
 
+ dlog("Running QuestsInit.", DL_INIT);
  QuestsInit();
+ dlogr(" Done", DL_INIT);
+
+// Исправление невозможности продажи ранее использованных "Счетчик Гейгера"/"Невидимка"
+ if (GetPrivateProfileIntA("Misc", "CanSellUsedGeiger", 0, ini)) {
+  SafeWrite8(0x46ADFA, 0xBA);
+  SafeWrite8(0x46AE2C, 0xBA);
+  MakeCall(0x467FF3, &barter_attempt_transaction_hook, false);
+  HookCall(0x46C0B9, &item_m_turn_off_hook);
+ }
 
  dlogr("Leave DllMain2", DL_MAIN);  
 }

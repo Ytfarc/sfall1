@@ -29,7 +29,6 @@ static void _stdcall ConsoleFilePrint(const char* msg) {
  consolefile << msg << endl;
 }
 
-static const DWORD display_print_hook_End = 0x42C0B1;
 static void __declspec(naked) display_print_hook() {
  __asm {
   pushad
@@ -41,7 +40,8 @@ static void __declspec(naked) display_print_hook() {
   push edx
   push esi
   push edi
-  jmp  display_print_hook_End
+  mov  ecx, 0x42C0B1
+  jmp  ecx
  }
 }
 

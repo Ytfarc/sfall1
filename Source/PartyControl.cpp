@@ -483,7 +483,6 @@ end:
  }
 }
 
-static const DWORD switch_hand_hook_End = 0x46516F;
 static void _declspec(naked) switch_hand_hook() {
  __asm {
   cmp  IsControllingNPC, 0
@@ -492,7 +491,8 @@ static void _declspec(naked) switch_hand_hook() {
   test eax, eax
   jnz  end
   pop  eax                                  // ”ничтожаем адрес возврата
-  jmp  switch_hand_hook_End
+  mov  esi, 0x46516F
+  jmp  esi
 end:  
   mov  esi, ebx
   cmp  dword ptr [edx], 0
@@ -515,18 +515,19 @@ end:
  }
 }
 
-static const DWORD action_skill_use_hook_End = 0x412365;
 static void __declspec(naked) action_skill_use_hook() {
  __asm {
   cmp  eax, SKILL_SNEAK
-  jne  end
+  jne  skip
   xor  eax, eax
   cmp  IsControllingNPC, eax
-  jne  end
-  retn
-end:
+  je   end
+skip:
   pop  eax                                  // ”ничтожаем адрес возврата
-  jmp  action_skill_use_hook_End
+  xor  eax, eax
+  dec  eax
+end:
+  retn
  }
 }
 

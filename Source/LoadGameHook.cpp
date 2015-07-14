@@ -47,7 +47,6 @@ static void __declspec(naked) gnw_main_hook1() {
 
 static char SaveFailMsg[128];
 static DWORD SaveInCombatFix = 0;
-static const DWORD SaveGame_hook_End = 0x46EB16;
 static void __declspec(naked) SaveGame_hook() {
  __asm {
   xor  esi, esi
@@ -81,7 +80,8 @@ end:
   mov  eax, offset SaveFailMsg
   call display_print_
   pop  eax                                  // Уничтожаем адрес возврата
-  jmp  SaveGame_hook_End
+  mov  eax, 0x46EB16
+  jmp  eax
  }
 }
 

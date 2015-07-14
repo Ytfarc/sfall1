@@ -255,3 +255,8 @@
 #define hit_kick                   (5)
 #define hit_left_weapon_reload     (6)
 #define hit_right_weapon_reload    (7)
+
+#define ROLL_CRITICAL_FAILURE (0)
+#define ROLL_FAILURE          (1)
+#define ROLL_SUCCESS          (2)
+#define ROLL_CRITICAL_SUCCESS (3)

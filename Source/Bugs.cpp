@@ -78,7 +78,6 @@ skip:
  }
 }
 
-static const DWORD item_d_check_addict_hook_End = 0x46CC5D;
 static void __declspec(naked) item_d_check_addict_hook() {
  __asm {
   mov  edx, 2                               // type = зависимость
@@ -101,7 +100,8 @@ skip:
   xchg ecx, eax                             // eax = _obj_dude
   call queue_find_first_
 end:
-  jmp  item_d_check_addict_hook_End
+  mov  esi, 0x46CC5D
+  jmp  esi
  }
 }
 
@@ -148,42 +148,39 @@ noWeapon:
  }
 }
 
-static const DWORD inven_right_hand_hook_Cont = 0x46555D;
-static const DWORD inven_right_hand_hook_End = 0x465572;
 static void __declspec(naked) inven_right_hand_hook() {
  __asm {
+  mov  esi, 0x46555D
   cmp  eax, ds:[_inven_dude]
-  je   end
-  jmp  inven_right_hand_hook_Cont
-end:
+  jne  end
   xchg edx, eax
-  jmp  inven_right_hand_hook_End
+  mov  esi, 0x465572
+end:
+  jmp  esi
  }
 }
 
-static const DWORD inven_left_hand_hook_Cont = 0x46559D;
-static const DWORD inven_left_hand_hook_End = 0x4655B2;
 static void __declspec(naked) inven_left_hand_hook() {
  __asm {
+  mov  esi, 0x46559D
   cmp  eax, ds:[_inven_dude]
-  je   end
-  jmp  inven_left_hand_hook_Cont
-end:
+  jne  end
   xchg edx, eax
-  jmp  inven_left_hand_hook_End
+  mov  esi, 0x4655B2
+end:
+  jmp  esi
  }
 }
 
-static const DWORD inven_worn_hook_Cont = 0x4655DD;
-static const DWORD inven_worn_hook_End = 0x4655F2;
 static void __declspec(naked) inven_worn_hook() {
  __asm {
+  mov  esi, 0x4655DD
   cmp  eax, ds:[_inven_dude]
-  je   end
-  jmp  inven_worn_hook_Cont
-end:
+  jne  end
   xchg edx, eax
-  jmp  inven_worn_hook_End
+  mov  esi, 0x4655F2
+end:
+  jmp  esi
  }
 }
 
@@ -261,17 +258,15 @@ end:
 }
 
 static DWORD inven_pickup_loop=-1;
-static const DWORD inven_pickup_hook_Fail = 0x464E16;
 static const DWORD inven_pickup_hook_Loop = 0x464D00;
-static const DWORD inven_pickup_hook_End = 0x464D9A;
-static const DWORD inven_pickup_hook_End1 = 0x464D3C;
 static void __declspec(naked) inven_pickup_hook() {
  __asm {
   cmp  inven_pickup_loop, -1
   jne  inLoop
   test eax, eax
   jnz  startLoop
-  jmp  inven_pickup_hook_Fail
+  mov  eax, 0x464E16
+  jmp  eax
 startLoop:
   xor  edx, edx
   mov  inven_pickup_loop, edx
@@ -304,10 +299,12 @@ foundRect:
   jle  inRange
 skip:
   pop  eax
-  jmp  inven_pickup_hook_End
+  mov  ebx, 0x464D9A
+  jmp  ebx
 inRange:
   pop  eax
-  jmp  inven_pickup_hook_End1
+  mov  ecx, 0x464D3C
+  jmp  ecx
  }
 }
 
@@ -364,30 +361,6 @@ static void __declspec(naked) PipStatus_hook() {
  }
 }
 
-static const DWORD barter_attempt_transaction_hook_Cont = 0x467FE8;
-static void __declspec(naked) barter_attempt_transaction_hook() {
- __asm {
-  cmp  dword ptr [eax+0x64], PID_ACTIVE_GEIGER_COUNTER
-  je   found
-  cmp  dword ptr [eax+0x64], PID_ACTIVE_STEALTH_BOY
-  je   found
-  xor  eax, eax
-  dec  eax
-  retn
-found:
-  call item_m_turn_off_
-  pop  eax                                  // Уничтожаем адрес возврата
-  jmp  barter_attempt_transaction_hook_Cont // А есть ли ещё включённые предметы среди продаваемых?
- }
-}
-
-static void __declspec(naked) item_m_turn_off_hook() {
- __asm {
-  and  byte ptr [eax+0x25], 0xDF            // Сбросим флаг использованного предмета
-  jmp  queue_remove_this_
- }
-}
-
 //checks if an attacked object is a critter before attempting dodge animation
 static void __declspec(naked) action_melee_hook() {
  __asm {
@@ -400,7 +373,8 @@ static void __declspec(naked) action_melee_hook() {
                                             // set to skip dodge animation
   test byte ptr [eax+0x44], 3               // (original code) DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN
 end:
-  retn
+  mov  ebx, 0x4112EA
+  jmp  ebx
  }
 }
 
@@ -464,16 +438,8 @@ void BugsInit() {
  HookCall(0x487BC0, &PipStatus_hook);
  dlogr(" Done", DL_INIT);
 
-// Исправление невозможности продажи ранее использованных "Счетчик Гейгера"/"Невидимка"
-// SafeWrite8(0x46ADDA, 0xBA);
- SafeWrite8(0x46ADFA, 0xBA);
- SafeWrite8(0x46AE2C, 0xBA);
- MakeCall(0x467FF3, &barter_attempt_transaction_hook, false);
- HookCall(0x46C0B9, &item_m_turn_off_hook);
-
  dlog("Applying Dodgy Door Fix.", DL_INIT);
- SafeWrite16(0x4112E3, 0x9090);
- MakeCall(0x4112E5, &action_melee_hook, false);
+ MakeCall(0x4112E3, &action_melee_hook, true);
  dlogr(" Done", DL_INIT);
 
 }

@@ -62,7 +62,6 @@ static void __declspec(naked) display_stats_hook() {
  }
 }
 
-static const DWORD display_stats_hook1_End = 0x465E94;
 static void __declspec(naked) display_stats_hook1() {
  __asm {
   call stat_level_
@@ -80,7 +79,8 @@ static void __declspec(naked) display_stats_hook1() {
   push eax
   call sprintf_
   add  esp, 4*5
-  jmp  display_stats_hook1_End
+  mov  eax, 0x465E94
+  jmp  eax
  }
 }
 
