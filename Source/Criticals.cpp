@@ -19,7 +19,7 @@
 #include "main.h"
 
 #include "Criticals.h"
-#include "Define.h"
+#include "FalloutEngine.h"
 #include "Logging.h"
 
 struct CritStruct {

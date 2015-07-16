@@ -19,7 +19,6 @@
 #include "main.h"
 
 #include <stdio.h>
-#include "Define.h"
 #include "FalloutEngine.h"
 #include "Logging.h"
 #include "version.h"

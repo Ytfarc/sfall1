@@ -19,7 +19,7 @@
 #include "main.h"
 
 #include <stdio.h>
-#include "Define.h"
+#include "FalloutEngine.h"
 
 void QuestsInit() {
  char buf[MAX_PATH-3];
