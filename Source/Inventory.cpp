@@ -47,7 +47,7 @@ reloadItem:
   inc  ecx
   jmp  reloadItem
 endReloadItem:
-  cmp  dword ptr ds:[0x5956B0][ebx], 5      // mode
+  cmp  dword ptr ds:[_itemButtonItems + 0x10][ebx], 5// mode
   jne  skip_toggle_item_state
   call intface_toggle_item_state_
 skip_toggle_item_state:
@@ -98,7 +98,7 @@ ourKey:
   je   endReload
   mov  edx, ds:[_itemCurrentItem]
   imul eax, edx, 24
-  cmp  byte ptr ds:[0x5956A5][eax], bl      // itsWeapon
+  cmp  byte ptr ds:[_itemButtonItems + 0x5][eax], bl// itsWeapon
   jne  itsWeapon                            // Да
   call intface_use_item_
   jmp  endReload
@@ -115,7 +115,7 @@ inCombat:
   call item_mp_cost_
   xchg ecx, eax
   pop  eax                                  // _obj_dude
-  mov  edx, [eax+0x40]                      // movePoints
+  mov  edx, [eax+0x40]                      // curr_mp
   cmp  ecx, edx
   jg   endReload
   push eax
@@ -124,7 +124,7 @@ inCombat:
   pop  eax                                  // _obj_dude
   jnz  endReload
   sub  edx, ecx
-  mov  [eax+0x40], edx                      // movePoints
+  mov  [eax+0x40], edx                      // curr_mp
   xchg edx, eax
   call intface_update_move_points_
 endReload:
@@ -169,7 +169,7 @@ reloadOffhand:
   inc  ecx
   jmp  reloadOffhand
 endReloadOffhand:
-  cmp  dword ptr ds:[0x5956B0][ebx], 5      // mode
+  cmp  dword ptr ds:[_itemButtonItems + 0x10][ebx], 5// mode
   jne  skip_toggle_item_state
   call intface_toggle_item_state_
 skip_toggle_item_state:
@@ -195,7 +195,7 @@ static void __declspec(naked) SetDefaultAmmo() {
   xchg edx, eax
   mov  ebx, eax
   call item_get_type_
-  cmp  eax, item_type_weapon                // Это item_type_weapon?
+  cmp  eax, item_type_weapon
   jne  end                                  // Нет
   cmp  dword ptr [ebx+0x3C], 0              // Есть патроны в оружии?
   jne  end                                  // Да

@@ -159,8 +159,9 @@ static void __declspec(naked) intface_item_reload_hook() {
 static DWORD RetryCombatMinAP;
 static void __declspec(naked) combat_turn_hook() {
  __asm {
-  xor  ebx, ebx
+  xor  eax, eax
 retry:
+  xchg ebx, eax
   mov  eax, esi
   push edx
   call combat_ai_
@@ -175,9 +176,7 @@ next:
   cmp  eax, RetryCombatMinAP
   jl   end
   cmp  eax, ebx
-  je   end
-  xchg ebx, eax
-  jmp  retry
+  jne  retry
 end:
   retn
  }
