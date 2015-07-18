@@ -125,6 +125,7 @@ extern const DWORD skill_set_tags_;
 extern const DWORD sprintf_;
 extern const DWORD stat_get_bonus_;
 extern const DWORD stat_level_;
+extern const DWORD stat_pc_add_experience_;
 extern const DWORD stat_pc_get_;
 extern const DWORD stat_pc_min_exp_;
 extern const DWORD switch_hand_;

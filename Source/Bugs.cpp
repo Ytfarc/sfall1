@@ -378,6 +378,44 @@ end:
  }
 }
 
+static DWORD XPWithSwiftLearner;
+static void __declspec(naked) stat_pc_add_experience_hook() {
+ __asm {
+  mov  XPWithSwiftLearner, esi
+  mov  eax, ds:[_Experience_]
+  retn
+ }
+}
+
+static void __declspec(naked) combat_give_exps_hook() {
+ __asm {
+  call stat_pc_add_experience_
+  mov  ebx, XPWithSwiftLearner
+  retn
+ }
+}
+
+static void __declspec(naked) loot_container_hook1() {
+ __asm {
+  xchg edi, eax
+  call stat_pc_add_experience_
+  cmp  edi, 1
+  jne  skip
+  push XPWithSwiftLearner
+  mov  ebx, [esp+0xF4]
+  push ebx
+  lea  eax, [esp+0x8]
+  push eax
+  call sprintf_
+  add  esp, 0xC
+  mov  eax, esp
+  call display_print_
+skip:
+  mov  ebx, 0x4679FA
+  jmp  ebx
+ }
+}
+
 void BugsInit() {
 
  dlog("Applying sharpshooter patch.", DL_INIT);
@@ -441,5 +479,10 @@ void BugsInit() {
  dlog("Applying Dodgy Door Fix.", DL_INIT);
  MakeCall(0x4112E3, &action_melee_hook, true);
  dlogr(" Done", DL_INIT);
+
+// ѕри выводе количества полученных очков опыта учитывать перк 'ѕрилежный ученик'
+ MakeCall(0x49D178, &stat_pc_add_experience_hook, false);
+ HookCall(0x420273, &combat_give_exps_hook);
+ MakeCall(0x4679CC, &loot_container_hook1, true);
 
 }

@@ -127,6 +127,7 @@ const DWORD skill_set_tags_ = 0x498850;
 const DWORD sprintf_ = 0x4D2B82;
 const DWORD stat_get_bonus_ = 0x49CB5C;
 const DWORD stat_level_ = 0x49C9D8;
+const DWORD stat_pc_add_experience_ = 0x49D14C;
 const DWORD stat_pc_get_ = 0x49CFE4;
 const DWORD stat_pc_min_exp_ = 0x49D06C;
 const DWORD switch_hand_ = 0x46505C;
