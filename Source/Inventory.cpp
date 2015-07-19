@@ -795,8 +795,9 @@ static char SuperStimMsg[128];
 static void __declspec(naked) protinst_default_use_item_hook() {
  __asm {
   mov  ecx, ebx                             // ecx = item
-  mov  edx, [edi+0x64]                      // edx = target pid
-  shr  edx, 0x18
+  mov  edx, [edi+0x20]                      // edx = target fid
+  and  edx, 0x0F000000
+  sar  edx, 0x18
   cmp  edx, ObjType_Critter
   mov  edx, [ebx+0x64]                      // edx = item pid
   jne  end

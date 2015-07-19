@@ -107,6 +107,8 @@ extern const DWORD perks_dialog_;
 extern const DWORD PipStatus_;
 extern const DWORD process_bk_;
 extern const DWORD proto_ptr_;
+extern const DWORD queue_clear_type_;
+extern const DWORD queue_find_;
 extern const DWORD queue_remove_this_;
 extern const DWORD register_begin_;
 extern const DWORD register_clear_;

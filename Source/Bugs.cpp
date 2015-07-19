@@ -416,6 +416,79 @@ skip:
  }
 }
 
+static DWORD critterObj;
+static void __declspec(naked) critterClearObj() {
+ __asm {
+  cmp  eax, critterObj
+  setz al
+  and  eax, 0xFF
+  retn
+ }
+}
+
+static void __declspec(naked) set_new_results_hook() {
+ __asm {
+  mov  ecx, 0x422871
+  test ah, 0x3                              // DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN
+  jz   end                                  // В сознании и на ногах
+  xor  edx, edx
+  inc  edx                                  // type = отключка
+  test ah, 0x1                              // DAM_KNOCKED_OUT
+  jnz  knocked_out                          // Без сознания
+  mov  eax, esi
+  call queue_find_
+  test eax, eax                             // Есть отключка в очереди?
+  jnz  end                                  // Да
+  mov  ecx, 0x422858
+  xchg edx, eax
+  jmp  ecx
+knocked_out:
+  mov  critterObj, esi
+  mov  eax, offset critterClearObj
+  xchg edx, eax
+  call queue_clear_type_
+  mov  ecx, 0x42283E
+end:
+  jmp  ecx
+ }
+}
+
+static void __declspec(naked) critter_wake_clear_hook() {
+ __asm {
+  test dl, 0x80                             // DAM_DEAD
+  jnz  skip                                 // Это трупик
+  push eax
+  mov  eax, esi
+  call isPartyMember_
+  test eax, eax                             // Это сопартиец?
+  pop  eax
+  jnz  end                                  // Да
+  and  dl, 0xFE                             // Сбрасываем DAM_KNOCKED_OUT
+  or   dl, 0x2                              // Устанавливаем DAM_KNOCKED_DOWN
+  mov  [esi+0x44], dl
+skip:
+  pop  eax                                  // Уничтожаем адрес возврата
+  xor  eax, eax
+  inc  eax
+  pop  esi
+  pop  ecx
+  pop  ebx
+end:
+  retn
+ }
+}
+
+static void __declspec(naked) critter_wake_clear_hook1() {
+ __asm {
+  xor  eax, eax
+  inc  eax
+  pop  esi
+  pop  ecx
+  pop  ebx
+  retn
+ }
+}
+
 void BugsInit() {
 
  dlog("Applying sharpshooter patch.", DL_INIT);
@@ -484,5 +557,11 @@ void BugsInit() {
  MakeCall(0x49D178, &stat_pc_add_experience_hook, false);
  HookCall(0x420273, &combat_give_exps_hook);
  MakeCall(0x4679CC, &loot_container_hook1, true);
+
+// Исправление "NPC turns into a container"
+ MakeCall(0x422839, &set_new_results_hook, true);
+ SafeWrite16(0x428DB7, 0x03EB);             // jmps 0x428DBC
+ MakeCall(0x428DD3, &critter_wake_clear_hook, false);
+ MakeCall(0x428E17, &critter_wake_clear_hook1, true);
 
 }
