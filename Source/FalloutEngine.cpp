@@ -109,6 +109,7 @@ const DWORD perks_dialog_ = 0x436420;
 const DWORD PipStatus_ = 0x487A9C;
 const DWORD process_bk_ = 0x4B395C;
 const DWORD proto_ptr_ = 0x49094C;
+const DWORD queue_add_ = 0x490D40;
 const DWORD queue_clear_type_ = 0x490F44;
 const DWORD queue_find_ = 0x490E5C;
 const DWORD queue_remove_this_ = 0x490E00;
