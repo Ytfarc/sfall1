@@ -48,6 +48,7 @@ const DWORD display_print_ = 0x42C0AC;
 const DWORD display_table_inventories_ = 0x468598;
 const DWORD display_target_inventory_ = 0x464060;
 const DWORD DOSCmdLineDestroy_ = 0x4CE77C;
+const DWORD dude_stand_ = 0x417CB0;
 const DWORD endgame_slideshow_ = 0x438910;
 const DWORD game_get_global_var_ = 0x43C998;
 const DWORD game_set_global_var_ = 0x43C9C8;

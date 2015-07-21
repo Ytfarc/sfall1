@@ -46,6 +46,7 @@ extern const DWORD display_print_;
 extern const DWORD display_table_inventories_;
 extern const DWORD display_target_inventory_;
 extern const DWORD DOSCmdLineDestroy_;
+extern const DWORD dude_stand_;
 extern const DWORD endgame_slideshow_;
 extern const DWORD game_get_global_var_;
 extern const DWORD game_set_global_var_;
