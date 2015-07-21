@@ -364,19 +364,36 @@ static void __declspec(naked) PipStatus_hook() {
 //checks if an attacked object is a critter before attempting dodge animation
 static void __declspec(naked) action_melee_hook() {
  __asm {
-  mov  eax, [ebp+0x20]                      // (original code) objStruct ptr
-  mov  ebx, [eax+0x20]                      // objStruct->FID
+  mov  edx, 0x4112EC
+  mov  ebx, [eax+0x20]                      // pobj.fid
   and  ebx, 0x0F000000
   sar  ebx, 0x18
   cmp  ebx, ObjType_Critter                 // check if object FID type flag is set to critter
-  jne  end                                  // if object not a critter leave jump condition flags
-                                            // set to skip dodge animation
-  test byte ptr [eax+0x44], 3               // (original code) DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN
+  jne  end                                  // if object not a critter skip dodge animation
+  test byte ptr [eax+0x44], 0x3             // (DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN)?
+  jnz  end
+  mov  edx, 0x41130E
 end:
-  mov  ebx, 0x4112EA
-  jmp  ebx
+  jmp  edx
  }
 }
+
+static void __declspec(naked) action_ranged_hook() {
+ __asm {
+  mov  edx, 0x4119F1
+  mov  ebx, [eax+0x20]                      // pobj.fid
+  and  ebx, 0x0F000000
+  sar  ebx, 0x18
+  cmp  ebx, ObjType_Critter                 // check if object FID type flag is set to critter
+  jne  end                                  // if object not a critter skip dodge animation
+  test byte ptr [eax+0x44], 0x3             // (DAM_KNOCKED_OUT or DAM_KNOCKED_DOWN)?
+  jnz  end
+  mov  edx, 0x411A56
+end:
+  jmp  edx
+ }
+}
+
 
 static DWORD XPWithSwiftLearner;
 static void __declspec(naked) stat_pc_add_experience_hook() {
@@ -566,7 +583,8 @@ void BugsInit() {
  dlogr(" Done", DL_INIT);
 
  dlog("Applying Dodgy Door Fix.", DL_INIT);
- MakeCall(0x4112E3, &action_melee_hook, true);
+ MakeCall(0x4112E6, &action_melee_hook, true);
+ MakeCall(0x411A50, &action_ranged_hook, true);
  dlogr(" Done", DL_INIT);
 
 // ѕри выводе количества полученных очков опыта учитывать перк 'ѕрилежный ученик'
