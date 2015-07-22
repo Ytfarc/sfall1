@@ -1,0 +1,109 @@
+Made by Crafty, English translation by Drobovik
+
+Changelog:
+
+v1.4
+* Added an ini setting 'CanSellUsedGeiger' to control the way buying/selling of used Geiger counter or a stealth boy is handled.
+! Made possible text window messages that correctly display the amount of xp given after taking Swift learner perk. Works for combat and skill usage xp.
+! Fixed infamous "NPC turns into a container" bug.
+
+v1.3
++ Added "NoCredits" setting to the [Debugging] section of the ddraw.ini; when enabled it turns off the sfall-specific credits displayed under Credits in main menu.
+! Now you can sell used Geiger Counter or stealth boy.
++ Added an ini setting 'QuestsFile' to use quests.ini file for adding custom quests names to pipboy.
+
+v1.2
+* Deleted ini settings - 'BlackSkilldexFix' and 'DodgyDoorsFix' - from ddraw.ini. These are pure engine fixes which cause no side effects, so it's pointless to disable them.
++ Added ini settings 'SaveInCombatFix' and 'SuperStimExploitFix'.
+
+v1.1
+! Added ini setting 'BlackSkilldexFix' needed to fix "black, inactive interface buttons, if you have too many quest entries and holodiscs in pipboy".
+! Fixed the bug I introduced that leads to a crash if you try to drag something out of the bag or backpack into the player's inventory.
+
+03/07/15
+! Fixed a bug of incorrectly displaying random negative numbers under the Skills button. Now they always show 0 if the character skill is in the negative.
++ Now, if the 'bonus ranged damage' perk was taken, the engine will correctly show added bonus in the character and inventory interface screens.
++ Added ini setting 'BonusHtHDamageFix' (by default = 1) - 'bonus ranged damage' perk effect gets applied not only to max, but min unarmed/melee damage as well.
+
+01/07/15
+* The [DebugMode] was added to the release sfall build, so it functions just like in debug dll.
+* Now the ini setting 'ExtraCRC' can accept multiple crc values.
+
+30/06/15
++ Added ini setting 'RemoveFriendlyFoe' which removes the Friendly Foe perk, while leaving the effect of the perk turned on. (just like in Fallout 2 party members are highlighted in green).
+
+26/06/15
++ Added an ability to use line break (\n) in pro_*.msg files (TEXT/ENGLISH/GAME folder).
+
+25/06/15
+! Just in case applied a fix for bug that was causing crashes if you try to murder perfectly healthy critter by using a lot of superstimpacks and leaving the map. (Though it doesn't seem be a problem in Fallout 1)
+
+24/06/15
+* If 'ControlCombat' ini setting is on for party members or all the critters in combat, you can't use Sneak ability while controlling them.
+
+20/06/15
+! Fixed a bug of determining the addictions of NPCs according to PC stats.
+
+17/06/15
++ Added ini setting 'ControlCombat' to manually control party members or all the critters in combat. By using 'ControlCombatPIDList' you can pick specific NPCs to control. Traits and perks of the player are not used anymore for the controlled NPCs. Also for controlled NPCs you can't put on armor in the inventory or save the game. Pressing 'Enter' (end combat) recognized as 'Space' (end turn).
+
+13/06/15
+! Fixed some functions used by the engine that control worn armor and wielded weapons. There was no check when by calling them for the non-player character worn armor or wielded weapon of the player were returned. (of course if you have armor on and weapon in hand[s]).
+
+06/06/15
++ Added ini setting 'ColorLOS' for changing the highlight color of enemies that are outside of player's line of sight. The algorithm is similar to the one in F2 engine: the "visibility" of line of sight enemies determined by PE*5; if the enemy has a see-through (stealthboy ghost) flag enabled then the "visibility" gets divided in half - (PE*5)/2.
+
+30/05/15
++ Added ini setting 'DontTurnOffSneakIfYouRun'. If it's on, when you engage a running mode of PC critter without having a 'Silent Running' perk, the Sneak interface tab would not be turned off and you would only walk.
+
+29/05/15
++ Added ini setting 'AutoQuickSave' to use more than one save slot for quick saving (F6) and without picking a slot beforehand. The number assigned is a number of save slots (1..10) to use for quick saving, cycling from the top one down and over to the earliest one.
+
+25/05/15
+* Fixed 'SpeedInterfaceCounterAnims' in the moment you die (negative value), when, for example, it showed "-993" instead of "-007".
++ Added ini setting 'EnableMusicInDialogue' that allows to leave the music playing in dialog mode with talking heads, just like with non-talking heads; volume is decreased in half.
++ Added ini setting 'MaxPCLevel' for setting a max player level possible to achieve.
+
+16/05/15
++ Added killap's fixes for critical hit table. The ones that in F2 version are fixed by OverrideCriticalTable=2.
+
+11/05/15
++ Changed the distance of engaging the walk from 5 to 1 hex, when you're trying to use something on the object, pick up, steal, or use a skill.
++ Adjusted the min and max values for the Chosen One's age during custom character creation from 16-35 to 8-60.
++ Added ini setting 'FakeCombatFix' to prevent 'A' button combat exploit. You can pick up items, open containers and use something on someone if the target is in the adjacent hex. Only after the picking an aggressive action (a shot, unarmed/melee hit) your character will be able to move.
+
+10/05/15
++ Added ini setting 'TurnHighlightContainers' to [Input] section. Turns on and off the highlighting of the containers while using 'ToggleItemHighlightsKey'.
+* The perk selecting window for the character screen was raised a bit higher.
+
+05/05/15
+* Expanded the way 'ToggleItemHighlightsKey' functions; now it highlights not only the items on the ground, but containers as well. With different color. Combined hotkey item highlight with mouse item highlight to avoid a situation when an item gets highlighted by pointing a mouse cursor on it, then hotkey gets pressed and after releasing the key highlighting under the mouse cursor vanishes. So, to make it easier to see the highlight color was changed from yellow to pink when mouse cursor hovers over an item.
++ Perk that wasn't selected right away doesn't disappear forever after gaining a new perk-giving level. It's now possible to stockpile perks.
+* Expanded the way 'ToggleItemHighlightsKey' functions; now it highlights not only the items on the ground, but containers as well. With different color. Combined hotkey item highlight with mouse item highlight to avoid a situation when an item gets highlighted by pointing a mouse cursor on it, then hotkey gets pressed and after releasing the key highlighting under the mouse cursor vanishes. So, to make it easier to see the highlight color was changed from yellow to pink when mouse cursor hovers over an item.
+
+02/05/15
++ Added ini settings 'NPCsTryToSpendExtraAP', 'RemoveCriticalTimelimits' and 'PlayIdleAnimOnReload'.
++ Added ini setting 'DrugExploitFix' for turning off the negative effects abuse (drug use, radiation, etc) to prevent book reading exploit.
+! Fixed two bugs of mousing clicking in pipboy.
++ Added hotkeys for the pipboy control buttons - '1' for "Status", '3' for "Maps", '4' for "Archives" and '2' for the alarm.
+! Just in case fixed "Too Many Items Bug" - "If all of a sudden you can't enter a certain map because the game hangs with a black screen, then it's definitely it" (c).
+! Fixed two bugs occurring with player's inventory use, which allows now weapon reloading, besides 'put weapon into a hand, and then drag the ammo from the inventory onto the weapon in hand' method, with 'dragging the ammo from the inventory onto a weapon in the inventory' method.
+! Fixed a bug affecting the reload method aka 'drag ammo from inventory onto weapon in the inventory', if the High Resolution Patch is installed and the setting IFACE_BAR_MODE from f1_res.ini equals 1. (breaks the count of the slot where the item was dragged to).
++ Added an ability to use Russian language encoding for character and savegame names. Different localizations use different encodings (Fargus/LevCorp - 866, 1C -1251), that's why there is an option now controlled by 'XltTable'. In the game the switch to Russian language is handled by a key, which was assigned by an ini setting 'XltKey' (by default, Scroll Lock).
++ Added an interface button 'Give all' in the barter window for trading with a container. Also, the hotkeys 'd' or 'D' can be used. The art for the button was borrowed from 'drop an item' mouse icon.
++ And for the button 'Take all' hotkeys 'A' and 'a' were assigned. The art is 'use item' mouse icon.
+
+26/04/15
++ Added ini setting 'FreeWeight' for showing the remaining free weight is displayed for the item swapping between containers (boxes, car's trunk, etc) and for the stealing or trading (free weight is not showed for merchants, since you can sell them any amount of stuff even if it's more than they can carry). The format is "free weight/max weight" for critters and "free volume/max volume" for containers.
++ Added ini setting 'ReloadWeaponKey' to assign a hotkey for the active hand weapon reloading or using an item.
++ Added ini setting 'AutoReloadWeapon' for the automatic weapon reloading placed in the active hand after the combat ends.
+* Added ini setting 'ReloadReserve' (to get rid of the annoying 'pick an ammo stack count' window), that changes the way weapon reloading works when you drop the ammo onto a gun picture in the inventory: 0 = use all the ammo packs to reload; 1 or more = (reserves extra magazines) if the amount of ammo mags is more than the reserve, all the mags are used minus the specified reserve amount. And if the amount of ammo mags in the inventory is less or equal to the reserve, then only one mag is used.
++ Added ini setting 'StackEmptyWeapons' for stacking the same type of unloaded weapons. Fixes the problem of having two stacks of same weapons, but with different ammo, after unloading one of them.
++ Now after opening the inventory, you can drag stimpacks or other consumables onto a character picture to use them.
+
+23/04/15
++ Added ini settings 'ToggleItemHighlightsKey', 'DisplayKarmaChanges' and [DebugMode].
+
+22/04/15
++ Added several ini settings from sfall2, like 'StartingMap', 'VersionString' and others.
+! For compiling v1.14a sources of original sfall for Fallout 1 were used.

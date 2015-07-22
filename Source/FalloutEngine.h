@@ -159,6 +159,7 @@ extern const DWORD win_register_button_;
 #define _drug_pid                0x5058B4
 #define _Educated                0x56E7D8
 #define _Experience_             0x665224
+#define _fallout_game_time       0x5079B0
 #define _flptr                   0x612D70
 #define _free_perk               0x56ED4D
 #define _game_global_vars        0x5050BC

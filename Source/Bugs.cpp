@@ -433,25 +433,14 @@ skip:
  }
 }
 
-static DWORD critterObj;
-static void __declspec(naked) critterClearObj() {
- __asm {
-  cmp  eax, critterObj
-  setz al
-  and  eax, 0xFF
-  retn
- }
-}
-
 static void __declspec(naked) set_new_results_hook() {
  __asm {
   test ah, 0x1                              // DAM_KNOCKED_OUT?
   jz   end                                  // Нет
-  mov  critterObj, esi
-  mov  edx, offset critterClearObj
-  xor  eax, eax
-  inc  eax                                  // type = отключка
-  call queue_clear_type_                    // Удаляем отключку из очереди (если отключка там есть)
+  mov  eax, esi
+  xor  edx, edx
+  inc  edx                                  // type = отключка
+  call queue_remove_this_                   // Удаляем отключку из очереди (если отключка там есть)
   retn
 end:
   pop  eax                                  // Уничтожаем адрес возврата

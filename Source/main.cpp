@@ -95,6 +95,7 @@ struct sMessage {
 };
 
 DWORD _combatNumTurns = 0;
+DWORD _tmpQNode;
 
 static const DWORD WalkDistance[] = {
  0x411E63,                                  // action_use_an_item_on_object_
@@ -1022,7 +1023,6 @@ end:
  }
 }
 
-static DWORD _tmpQNode;
 void __declspec(naked) queue_find_first_() {
  __asm {
   push ecx
