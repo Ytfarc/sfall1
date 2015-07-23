@@ -217,12 +217,11 @@ static void __declspec(naked) DebugMode() {
 
 static void __declspec(naked) obj_outline_all_items_on_() {
  __asm {
-  push ebx
   mov  eax, dword ptr ds:[_map_elevation]
   call obj_find_first_at_
+loopObject:
   test eax, eax
   jz   end
-loopObject:
   cmp  eax, ds:[_outlined_object]
   je   nextObject
   xchg ecx, eax
@@ -245,41 +244,36 @@ NoHighlight:
   mov  [ecx+0x74], edx
 nextObject:
   call obj_find_next_at_
-  test eax, eax
-  jnz  loopObject
+  jmp  loopObject
 end:
   call tile_refresh_display_
-  pop  ebx
   retn
  }
 }
 
 static void __declspec(naked) obj_outline_all_items_off_() {
  __asm {
-  push ebx
   mov  eax, dword ptr ds:[_map_elevation]
   call obj_find_first_at_
+loopObject:
   test eax, eax
   jz   end
-loopObject:
   cmp  eax, ds:[_outlined_object]
   je   nextObject
-  xchg ebx, eax
-  mov  eax, [ebx+0x20]
+  xchg ecx, eax
+  mov  eax, [ecx+0x20]
   and  eax, 0xF000000
   sar  eax, 0x18
   test eax, eax                             // Это ObjType_Item?
   jnz  nextObject                           // Нет
-  cmp  dword ptr [ebx+0x7C], eax            // Кому-то принадлежит?
+  cmp  dword ptr [ecx+0x7C], eax            // Кому-то принадлежит?
   jnz  nextObject                           // Да
-  mov  dword ptr [ebx+0x74], eax
+  mov  dword ptr [ecx+0x74], eax
 nextObject:
   call obj_find_next_at_
-  test eax, eax
-  jnz  loopObject
+  jmp  loopObject
 end:
   call tile_refresh_display_
-  pop  ebx
   retn
  }
 }
