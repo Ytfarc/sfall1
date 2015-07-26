@@ -191,3 +191,5 @@
 #define ROLL_FAILURE          (1)
 #define ROLL_SUCCESS          (2)
 #define ROLL_CRITICAL_SUCCESS (3)
+
+#define destroy_p_proc (18)
